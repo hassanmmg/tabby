@@ -67,7 +67,7 @@
               Try Again
             </NuxtLink>
             <NuxtLink
-              to="/products"
+              to="/"
               class="inline-block bg-gray-200 text-gray-800 px-8 py-3 rounded-md hover:bg-gray-300 transition-colors font-medium"
             >
               Continue Shopping

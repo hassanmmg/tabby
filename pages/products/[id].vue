@@ -214,7 +214,7 @@
 
         <div v-else class="text-center py-20">
           <p class="text-gray-500">Product not found</p>
-          <NuxtLink to="/products" class="text-blue-600 hover:text-blue-700 mt-4 inline-block">
+          <NuxtLink to="/" class="text-blue-600 hover:text-blue-700 mt-4 inline-block">
             Back to Products
           </NuxtLink>
         </div>
