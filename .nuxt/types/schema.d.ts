@@ -133,6 +133,8 @@ declare module 'nuxt/schema' {
 
    chipSandbox: boolean,
 
+   supabaseServiceKey: string,
+
    nitro: {
       envPrefix: string,
    },
@@ -143,6 +145,10 @@ declare module 'nuxt/schema' {
   }
   interface PublicRuntimeConfig {
    apiBase: string,
+
+   supabaseUrl: string,
+
+   supabaseKey: string,
 
    supabase: {
       url: string,
