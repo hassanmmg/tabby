@@ -159,7 +159,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useCartStore } from '~/stores/cart'
 
-const supabase = useSupabaseClient()
 const cartStore = ref(null)
 
 // State
@@ -171,26 +170,18 @@ const selectedBrands = ref([])
 const minPrice = ref(null)
 const maxPrice = ref(null)
 
-// Fetch products from Supabase
+// Fetch products from server API
 const fetchProducts = async () => {
   loading.value = true
   try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-    if (error) {
-      console.error('Error fetching products:', error)
-    } else {
-      allProducts.value = data || []
-      console.log(`Fetched ${allProducts.value.length} products`)
-      if (allProducts.value.length > 0) {
-        console.log('Sample product:', allProducts.value[0])
-      }
+    const data = await $fetch('/api/products')
+    allProducts.value = data || []
+    console.log(`Fetched ${allProducts.value.length} products`)
+    if (allProducts.value.length > 0) {
+      console.log('Sample product:', allProducts.value[0])
     }
   } catch (err) {
-    console.error('Error:', err)
+    console.error('Error fetching products:', err)
   } finally {
     loading.value = false
   }
