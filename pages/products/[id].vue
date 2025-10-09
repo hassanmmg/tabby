@@ -45,11 +45,11 @@
             <div class="border-t border-b py-4 mb-6 space-y-2">
               <div class="flex">
                 <span class="w-32 text-gray-600">Category</span>
-                <span class="font-medium">{{ product.category || 'Ceiling Fans' }}</span>
+                <span class="font-medium">{{ product.category }}</span>
               </div>
               <div class="flex">
                 <span class="w-32 text-gray-600">Brand</span>
-                <span class="font-medium">{{ product.brand || 'KDK' }}</span>
+                <span class="font-medium">{{ product.brand }}</span>
               </div>
             </div>
 
@@ -87,17 +87,6 @@
                   Buy Now
                 </button>
               </div>
-            </div>
-
-            <!-- Shipping Information -->
-            <div class="bg-blue-50 border border-blue-200 rounded p-4">
-              <h3 class="font-semibold text-blue-900 mb-3">Shipping Information</h3>
-              <ul class="space-y-2 text-sm text-blue-900">
-                <li>• Free shipping on orders over MYR 500</li>
-                <li>• Fast shipping available</li>
-                <li>• Genuine OEM parts</li>
-                <li>• Expert support available</li>
-              </ul>
             </div>
           </div>
         </div>

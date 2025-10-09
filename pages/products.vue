@@ -128,8 +128,8 @@
                   {{ product.title }}
                 </h3>
                 <p v-if="product.part_no" class="text-sm text-gray-500 mb-3">{{ product.part_no }}</p>
-                <p class="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-                  {{ product.description || `${product.title} - High quality ceiling fans from KDK...` }}
+                <p v-if="product.description" class="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                  {{ product.description }}
                 </p>
 
                 <!-- Price and Button -->
@@ -203,7 +203,7 @@ const fetchProducts = async () => {
 const categories = computed(() => {
   const catMap = {}
   allProducts.value.forEach(p => {
-    const cat = p.category || 'Ceiling Fans'
+    const cat = p.category
     if (!catMap[cat]) {
       catMap[cat] = { label: cat, value: cat, count: 0 }
     }
@@ -241,7 +241,7 @@ const filteredProducts = computed(() => {
   // Category filter
   if (selectedCategories.value.length > 0) {
     filtered = filtered.filter(p => {
-      const cat = p.category || 'Ceiling Fans'
+      const cat = p.category
       return selectedCategories.value.includes(cat)
     })
   }
