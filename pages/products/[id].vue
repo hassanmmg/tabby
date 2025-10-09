@@ -229,7 +229,6 @@ import { useCartStore } from '@/stores/cart'
 const route = useRoute()
 const router = useRouter()
 const cartStore = useCartStore()
-const supabase = useSupabaseClient()
 
 const loading = ref(true)
 const product = ref(null)
@@ -291,36 +290,29 @@ const buyNow = () => {
   router.push('/checkout')
 }
 
-// Fetch product data from Supabase
+// Fetch product data from server API
 onMounted(async () => {
   try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', route.params.id)
-      .single()
+    // Fetch single product
+    const data = await $fetch(`/api/products/${route.params.id}`)
+    product.value = data
 
-    if (error) {
-      console.error('Error fetching product:', error)
-    } else {
-      product.value = data
-
-      // Fetch related products from the same category
-      if (data.category) {
-        const { data: related, error: relatedError } = await supabase
-          .from('products')
-          .select('*')
-          .eq('category', data.category)
-          .neq('id', data.id)
-          .limit(4)
-
-        if (!relatedError && related) {
-          relatedProducts.value = related
+    // Fetch related products from the same category
+    if (data.category) {
+      const related = await $fetch('/api/products', {
+        params: {
+          category: data.category,
+          limit: 5
         }
+      })
+
+      // Filter out the current product from related products
+      if (related) {
+        relatedProducts.value = related.filter(p => p.id !== data.id).slice(0, 4)
       }
     }
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error fetching product:', error)
   } finally {
     loading.value = false
   }

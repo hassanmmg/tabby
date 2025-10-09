@@ -56,9 +56,12 @@ export default defineNuxtConfig({
     chipBrandId: process.env.CHIP_BRAND_ID || '',
     chipApiKey: process.env.CHIP_API_KEY || '',
     chipSandbox: process.env.CHIP_SANDBOX === 'true',
+    supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY || '',
     // Public keys (available client-side)
     public: {
       apiBase: '/api',
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
       supabase: {
         url: process.env.SUPABASE_URL,
         key: process.env.SUPABASE_KEY
