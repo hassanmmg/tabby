@@ -1,185 +1,323 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12">
-    <div class="container mx-auto px-4">
-      <!-- Page Header -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold mb-2">All Products</h1>
-        <nav class="text-sm text-gray-600">
-          <NuxtLink to="/" class="hover:text-red-500">Home</NuxtLink>
-          <span class="mx-2">/</span>
-          <span>Products</span>
-        </nav>
-      </div>
+  <div class="bg-gray-50 min-h-screen">
+    <Navbar />
 
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <!-- Filters Sidebar -->
-        <div class="lg:col-span-1">
-          <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-lg font-semibold mb-4">Filters</h2>
-            
-            <!-- Categories -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+      <div class="flex gap-6">
+        <!-- Sidebar Filters -->
+        <aside class="w-72 flex-shrink-0">
+          <div class="bg-white shadow-sm border border-gray-200 p-6 sticky top-6">
+            <!-- Search -->
             <div class="mb-6">
-              <h3 class="font-medium mb-3">Categories</h3>
+              <h3 class="font-semibold text-lg mb-3">Search</h3>
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Search by part # or name"
+                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Category -->
+            <div class="mb-6">
+              <h3 class="font-semibold text-lg mb-3">Category</h3>
               <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span>Cooling Parts (250)</span>
+                <label
+                  v-for="cat in categories"
+                  :key="cat.value"
+                  class="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded"
+                >
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      :value="cat.value"
+                      v-model="selectedCategories"
+                      class="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <span class="text-gray-700">{{ cat.label }}</span>
+                  </div>
+                  <span class="text-gray-500 text-sm">({{ cat.count }})</span>
                 </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span>Engine Parts (180)</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span>Hydraulic Systems (120)</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span>Electrical (95)</span>
+              </div>
+            </div>
+
+            <!-- Brand -->
+            <div class="mb-6">
+              <h3 class="font-semibold text-lg mb-3">Brand</h3>
+              <div class="space-y-2">
+                <label
+                  v-for="brand in brands"
+                  :key="brand"
+                  class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded"
+                >
+                  <input
+                    type="checkbox"
+                    :value="brand"
+                    v-model="selectedBrands"
+                    class="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <span class="text-gray-700">{{ brand }}</span>
                 </label>
               </div>
             </div>
 
             <!-- Price Range -->
             <div class="mb-6">
-              <h3 class="font-medium mb-3">Price Range</h3>
-              <div class="space-y-2">
-                <input type="number" placeholder="Min" class="w-full border rounded px-3 py-2">
-                <input type="number" placeholder="Max" class="w-full border rounded px-3 py-2">
+              <h3 class="font-semibold text-lg mb-3">Price Range (RM)</h3>
+              <div class="flex gap-2">
+                <input
+                  v-model.number="minPrice"
+                  type="number"
+                  placeholder="Min"
+                  class="w-1/2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                />
+                <input
+                  v-model.number="maxPrice"
+                  type="number"
+                  placeholder="Max"
+                  class="w-1/2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                />
               </div>
             </div>
 
-            <!-- Brands -->
-            <div class="mb-6">
-              <h3 class="font-medium mb-3">Brands</h3>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span>OEM Parts</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span>Aftermarket</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span>Premium</span>
-                </label>
-              </div>
-            </div>
-
-            <button class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600">
-              Apply Filters
+            <button
+              v-if="hasActiveFilters"
+              @click="clearFilters"
+              class="w-full text-blue-600 hover:text-blue-700 text-sm font-medium"
+            >
+              Clear all filters
             </button>
           </div>
-        </div>
+        </aside>
 
         <!-- Products Grid -->
-        <div class="lg:col-span-3">
-          <!-- Sort Bar -->
-          <div class="bg-white rounded-lg shadow p-4 mb-6 flex justify-between items-center">
-            <p class="text-gray-600">Showing {{ products.length }} products</p>
-            <select class="border rounded px-3 py-2">
-              <option>Sort by: Featured</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Name: A to Z</option>
-              <option>Name: Z to A</option>
-            </select>
+        <main class="flex-1">
+          <!-- Loading State -->
+          <div v-if="loading" class="flex justify-center py-12">
+            <div class="animate-spin h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
 
           <!-- Products -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ProductCard v-for="product in products" :key="product.id" :product="product" />
+          <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <NuxtLink
+              v-for="product in filteredProducts"
+              :key="product.id"
+              :to="`/products/${product.id}`"
+              class="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden block"
+            >
+              <!-- In Stock Badge -->
+              <div class="relative">
+                <span class="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded z-10">
+                  In Stock
+                </span>
+
+                <!-- Product Image -->
+                <div class="aspect-square bg-white flex items-center justify-center p-8">
+                  <img
+                    :src="product.image_url"
+                    :alt="product.title"
+                    class="w-full h-full object-contain"
+                    @error="handleImageError"
+                  />
+                </div>
+              </div>
+
+              <!-- Product Info -->
+              <div class="p-5">
+                <h3 class="font-semibold text-base text-gray-900 mb-2 line-clamp-2">
+                  {{ product.title }}
+                </h3>
+                <p v-if="product.part_no" class="text-sm text-gray-500 mb-3">{{ product.part_no }}</p>
+                <p class="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                  {{ product.description || `${product.title} - High quality ceiling fans from KDK...` }}
+                </p>
+
+                <!-- Price and Button -->
+                <div class="flex items-center justify-between">
+                  <span class="text-2xl font-bold text-gray-900">
+                    MYR {{ product.price?.toFixed(2) || '0.00' }}
+                  </span>
+                  <button
+                    @click.prevent.stop="addToCart(product)"
+                    class="bg-blue-600 text-white px-5 py-2 hover:bg-blue-700 transition-colors font-medium text-sm"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </NuxtLink>
           </div>
 
-          <!-- Pagination -->
-          <div class="mt-8 flex justify-center">
-            <div class="flex gap-2">
-              <button class="px-4 py-2 border rounded hover:bg-gray-100">Previous</button>
-              <button class="px-4 py-2 bg-red-500 text-white rounded">1</button>
-              <button class="px-4 py-2 border rounded hover:bg-gray-100">2</button>
-              <button class="px-4 py-2 border rounded hover:bg-gray-100">3</button>
-              <button class="px-4 py-2 border rounded hover:bg-gray-100">Next</button>
-            </div>
+          <!-- No Products -->
+          <div v-if="!loading && filteredProducts.length === 0" class="text-center py-12">
+            <p class="text-gray-500 text-lg">No products found</p>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useCartStore } from '~/stores/cart'
 
-// Mock products data - replace with API call
-const products = ref([
-  {
-    id: 1,
-    name: 'Heavy Duty Water Pump',
-    sku: 'WP-001',
-    price: 299.99,
-    originalPrice: 399.99,
-    image: '/images/placeholder.svg',
-    badge: 'Sale'
-  },
-  {
-    id: 2,
-    name: 'Industrial Radiator',
-    sku: 'RAD-002',
-    price: 599.99,
-    image: '/images/placeholder.svg'
-  },
-  {
-    id: 3,
-    name: 'Oil Cooler Assembly',
-    sku: 'OC-003',
-    price: 449.99,
-    image: '/images/placeholder.svg'
-  },
-  {
-    id: 4,
-    name: 'Fan Blade Set',
-    sku: 'FB-004',
-    price: 149.99,
-    originalPrice: 199.99,
-    image: '/images/placeholder.svg',
-    badge: 'Sale'
-  },
-  {
-    id: 5,
-    name: 'Thermostat Housing',
-    sku: 'TH-005',
-    price: 89.99,
-    image: '/images/placeholder.svg'
-  },
-  {
-    id: 6,
-    name: 'Expansion Tank',
-    sku: 'ET-006',
-    price: 129.99,
-    image: '/images/placeholder.svg'
-  },
-  {
-    id: 7,
-    name: 'Cooling Hose Kit',
-    sku: 'CH-007',
-    price: 79.99,
-    image: '/images/placeholder.svg'
-  },
-  {
-    id: 8,
-    name: 'Temperature Sensor',
-    sku: 'TS-008',
-    price: 49.99,
-    image: '/images/placeholder.svg'
-  },
-  {
-    id: 9,
-    name: 'Radiator Cap',
-    sku: 'RC-009',
-    price: 19.99,
-    image: '/images/placeholder.svg'
+const supabase = useSupabaseClient()
+const cartStore = ref(null)
+
+// State
+const allProducts = ref([])
+const loading = ref(true)
+const searchQuery = ref('')
+const selectedCategories = ref([])
+const selectedBrands = ref([])
+const minPrice = ref(null)
+const maxPrice = ref(null)
+
+// Fetch products from Supabase
+const fetchProducts = async () => {
+  loading.value = true
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching products:', error)
+    } else {
+      allProducts.value = data || []
+      console.log(`Fetched ${allProducts.value.length} products`)
+      if (allProducts.value.length > 0) {
+        console.log('Sample product:', allProducts.value[0])
+      }
+    }
+  } catch (err) {
+    console.error('Error:', err)
+  } finally {
+    loading.value = false
   }
-])
+}
+
+// Categories with counts
+const categories = computed(() => {
+  const catMap = {}
+  allProducts.value.forEach(p => {
+    const cat = p.category || 'Ceiling Fans'
+    if (!catMap[cat]) {
+      catMap[cat] = { label: cat, value: cat, count: 0 }
+    }
+    catMap[cat].count++
+  })
+  return Object.values(catMap)
+})
+
+// Brands
+const brands = computed(() => {
+  const brandSet = new Set()
+  allProducts.value.forEach(p => {
+    if (p.brand) brandSet.add(p.brand)
+  })
+  return Array.from(brandSet).sort()
+})
+
+// Filtered products
+const filteredProducts = computed(() => {
+  let filtered = [...allProducts.value]
+
+  // Only show products with image_url
+  filtered = filtered.filter(p => p.image_url)
+
+  // Search filter
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(p =>
+      (p.title && p.title.toLowerCase().includes(query)) ||
+      (p.part_no && p.part_no.toLowerCase().includes(query)) ||
+      (p.description && p.description.toLowerCase().includes(query))
+    )
+  }
+
+  // Category filter
+  if (selectedCategories.value.length > 0) {
+    filtered = filtered.filter(p => {
+      const cat = p.category || 'Ceiling Fans'
+      return selectedCategories.value.includes(cat)
+    })
+  }
+
+  // Brand filter
+  if (selectedBrands.value.length > 0) {
+    filtered = filtered.filter(p => selectedBrands.value.includes(p.brand))
+  }
+
+  // Price filter
+  if (minPrice.value !== null && minPrice.value !== '') {
+    filtered = filtered.filter(p => p.price >= minPrice.value)
+  }
+  if (maxPrice.value !== null && maxPrice.value !== '') {
+    filtered = filtered.filter(p => p.price <= maxPrice.value)
+  }
+
+  return filtered
+})
+
+// Check for active filters
+const hasActiveFilters = computed(() =>
+  searchQuery.value ||
+  selectedCategories.value.length > 0 ||
+  selectedBrands.value.length > 0 ||
+  minPrice.value !== null ||
+  maxPrice.value !== null
+)
+
+// Clear filters
+const clearFilters = () => {
+  searchQuery.value = ''
+  selectedCategories.value = []
+  selectedBrands.value = []
+  minPrice.value = null
+  maxPrice.value = null
+}
+
+// Add to cart
+const addToCart = (product) => {
+  if (cartStore.value) {
+    cartStore.value.addToCart({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image_url: product.image_url
+    })
+    cartStore.value.openCart()
+
+    // Show notification
+    const notification = document.createElement('div')
+    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 shadow-lg z-50 rounded'
+    notification.textContent = 'Product added to cart!'
+    document.body.appendChild(notification)
+
+    setTimeout(() => {
+      notification.remove()
+    }, 3000)
+  }
+}
+
+// Handle image load errors
+const handleImageError = (event: Event) => {
+  const target = event.target as HTMLImageElement
+  console.error('Failed to load image:', target.src)
+  // Don't hide the image, let the fallback SVG show instead
+  target.style.display = 'none'
+  const fallback = target.nextElementSibling
+  if (fallback) {
+    (fallback as HTMLElement).style.display = 'block'
+  }
+}
+
+// Initialize
+onMounted(() => {
+  cartStore.value = useCartStore()
+  fetchProducts()
+})
 </script>

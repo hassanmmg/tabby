@@ -1,98 +1,92 @@
+import { writeFileSync, existsSync, mkdirSync } from 'fs'
+import { join } from 'path'
+
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	compatibilityDate: "2024-11-01",
-  
-	// Enable devtools in development mode
-	...(process.env.ENV_TYPE === "development" && {
-	  devtools: { enabled: true },
-	}),
-  
-	// Ensure compatibility with Nuxt 4
-	future: {
-	  compatibilityVersion: 4,
-	},
-  
-	// Nuxt modules
-	modules: [
-	  "@nuxtjs/tailwindcss",
-	  "@pinia/nuxt",
-	  "@nuxtjs/i18n",
-	  "nuxt-svgo",
-	  "@nuxtjs/google-fonts",
-	  "@nuxt/image",
-	  "@nuxtjs/supabase"
-	],
-  
-	// Google Fonts configuration
-	googleFonts: {
-	  display: "swap",
-	  outputDir: "assets",
-	  stylePath: "css/fonts.css",
-	  families: {
-		Inter: [200, 300, 400, 500, 600],
-	  },
-	},
-  
-	// Tailwind CSS configuration
-	tailwindcss: {
-	  cssPath: "~/assets/css/main.css",
-	  configPath: "./tailwind.config",
-	  ...(process.env.ENV_TYPE === "development" && {
-		disableHMR: true,
-		viewer: true,
-	  }),
-	},
-  
-	// i18n configuration
-	i18n: {
-	  vueI18n: "./i18n.config.ts",
-	  locales: [
-		{ code: "en", file: "en.json", name: "English" },
-		{ code: "ms", file: "ms.json", name: "Bahasa" },
-		{ code: "id", file: "id.json", name: "Indonesian" },
-	  ],
-	  langDir: "assets/lang",
-	  lazy: true,
-	  defaultLocale: "en",
-	  strategy: "no_prefix",
-	  restructureDir: false,
-	  detectBrowserLanguage: {
-		useCookie: true,
-		cookieKey: "language",
-		cookieSecure: true,
-		redirectOn: "root",
-	  },
-	},
-  
-	// SVGO configuration
-	svgo: {
-	  autoImportPath: "~/assets/svg",
-	  componentPrefix: "svg",
-	},
-
-	// Runtime config for environment variables
-	runtimeConfig: {
-	  // Private keys (server-side only)
-	  supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY,
-	  
-	  // Public keys (available on both server and client)
-	  public: {
-		supabaseUrl: process.env.SUPABASE_URL,
-		supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
-		siteUrl: process.env.SITE_URL || 'http://localhost:3000'
-	  }
-	},
-
-	// Supabase configuration
-	supabase: {
-	  url: process.env.SUPABASE_URL,
-	  key: process.env.SUPABASE_ANON_KEY,
-	  redirectOptions: {
-		login: '/auth/login',
-		callback: '/',
-		include: undefined,
-		exclude: ['/'],
-		cookieRedirect: false,
-	  }
-	}
-  });
+  hooks: {
+    'prepare:types': () => {
+      // Ensure TypeScript config files exist for build
+      const nuxtDir = join(process.cwd(), '.nuxt')
+      if (existsSync(nuxtDir)) {
+        const tsconfigFiles = ['tsconfig.app.json', 'tsconfig.shared.json', 'tsconfig.node.json']
+        for (const file of tsconfigFiles) {
+          const filePath = join(nuxtDir, file)
+          if (!existsSync(filePath)) {
+            writeFileSync(filePath, JSON.stringify({ extends: './tsconfig.json' }, null, 2))
+          }
+        }
+      }
+    }
+  },
+  compatibilityDate: '2024-07-15',
+  devtools: { enabled: false },
+  experimental: {
+    appManifest: false,
+    typescriptBundlerResolution: false
+  },
+  typescript: {
+    strict: false,
+    shim: false
+  },
+  nitro: {
+    experimental: {
+      wasm: false
+    },
+    esbuild: {
+      options: {
+        target: 'esnext'
+      }
+    },
+    cors: {
+      origin: '*',
+      credentials: true
+    }
+  },
+  vite: {
+    server: {
+      hmr: {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 24678
+      }
+    }
+  },
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+    '@nuxt/image',
+    '@nuxtjs/supabase'
+  ],
+  css: ['~/assets/css/main.css'],
+  app: {
+    head: {
+      title: 'Teknopuri Shop - Industrial Parts & Equipment',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Quality cooling parts, seats and accessories for forklifts and industrial equipment' }
+      ]
+    }
+  },
+  runtimeConfig: {
+    // Private keys (server-side only)
+    chipBrandId: process.env.CHIP_BRAND_ID || '',
+    chipApiKey: process.env.CHIP_API_KEY || '',
+    chipSandbox: process.env.CHIP_SANDBOX === 'true',
+    // Public keys (available client-side)
+    public: {
+      apiBase: '/api',
+      supabase: {
+        url: process.env.SUPABASE_URL,
+        key: process.env.SUPABASE_KEY
+      }
+    }
+  },
+  supabase: {
+    redirect: false
+  },
+  image: {
+    dir: 'public'
+  }
+})
   

@@ -1,6 +1,8 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12">
-    <div class="container mx-auto px-4">
+  <div>
+    <Navbar />
+    <div class="min-h-screen bg-gray-50 py-12">
+      <div class="container mx-auto px-4">
       <h1 class="text-3xl font-bold mb-8">Checkout</h1>
       
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -80,31 +82,40 @@
             <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
             
             <div class="space-y-4 mb-6">
-              <div v-for="item in cartItems" :key="item.id" class="flex justify-between">
+              <div v-for="item in cartItems" :key="item.id" class="flex gap-4">
+                <div class="w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+                  <img
+                    v-if="item.image_url"
+                    :src="item.image_url"
+                    :alt="item.title"
+                    class="w-full h-full object-cover"
+                  />
+                  <div v-else class="w-full h-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                </div>
                 <div class="flex-1">
-                  <p class="font-medium">{{ item.name }}</p>
+                  <p class="font-medium">{{ item.title }}</p>
                   <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
                 </div>
-                <span class="font-medium">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                <span class="font-medium">MYR {{ (item.price * item.quantity).toFixed(2) }}</span>
               </div>
             </div>
 
             <div class="border-t pt-4 space-y-2">
               <div class="flex justify-between">
                 <span>Subtotal</span>
-                <span>${{ subtotal.toFixed(2) }}</span>
+                <span>MYR {{ subtotal.toFixed(2) }}</span>
               </div>
               <div class="flex justify-between">
                 <span>Shipping</span>
-                <span>${{ shipping.toFixed(2) }}</span>
-              </div>
-              <div class="flex justify-between">
-                <span>Tax</span>
-                <span>${{ tax.toFixed(2) }}</span>
+                <span>MYR {{ shipping.toFixed(2) }}</span>
               </div>
               <div class="border-t pt-2 flex justify-between text-lg font-semibold">
                 <span>Total</span>
-                <span>${{ total.toFixed(2) }}</span>
+                <span>MYR {{ total.toFixed(2) }}</span>
               </div>
             </div>
 
@@ -117,6 +128,7 @@
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -145,10 +157,9 @@ const shippingAddress = ref({
 const paymentMethod = ref('card')
 
 const cartItems = computed(() => cartStore.items)
-const subtotal = computed(() => cartStore.total)
-const shipping = computed(() => subtotal.value > 100 ? 0 : 10)
-const tax = computed(() => subtotal.value * 0.08)
-const total = computed(() => subtotal.value + shipping.value + tax.value)
+const subtotal = computed(() => cartStore.subtotal)
+const shipping = computed(() => subtotal.value > 200 ? 0 : 15)
+const total = computed(() => subtotal.value + shipping.value)
 
 const isFormValid = computed(() => {
   return customerInfo.value.firstName &&

@@ -2,10 +2,12 @@ import { defineStore } from 'pinia'
 
 interface CartItem {
   id: string
-  name: string
-  sku: string
+  title: string
   price: number
-  image?: string
+  weight?: string
+  stock_status?: string
+  image_url?: string
+  url?: string
   quantity: number
 }
 
@@ -16,30 +18,33 @@ export const useCartStore = defineStore('cart', {
   }),
 
   getters: {
-    itemCount: (state) => {
-      return state.items.reduce((total, item) => total + item.quantity, 0)
-    },
+    itemCount: (state) => state.items.reduce((total, item) => total + item.quantity, 0),
 
-    total: (state) => {
-      return state.items.reduce((total, item) => total + (item.price * item.quantity), 0)
+    subtotal: (state) => {
+      return state.items.reduce((total, item) => {
+        return total + (item.price * item.quantity)
+      }, 0)
     }
   },
 
   actions: {
-    addItem(item: CartItem) {
-      const existingItem = this.items.find(i => i.id === item.id)
-      
+    addToCart(product: Omit<CartItem, 'quantity'>) {
+      const existingItem = this.items.find(item => item.id === product.id)
+
       if (existingItem) {
-        existingItem.quantity += item.quantity
+        existingItem.quantity++
       } else {
-        this.items.push(item)
+        this.items.push({
+          ...product,
+          price: Number(product.price) || 0,
+          quantity: 1
+        })
       }
-      
-      // Save to localStorage
+
       this.saveToLocalStorage()
     },
 
-    removeItem(id: string) {
+    removeFromCart(id: string) {
       const index = this.items.findIndex(item => item.id === id)
       if (index > -1) {
         this.items.splice(index, 1)
@@ -47,19 +52,15 @@ export const useCartStore = defineStore('cart', {
       }
     },
 
-    incrementQuantity(id: string) {
-      const item = this.items.find(i => i.id === id)
+    updateQuantity(id: string, quantity: number) {
+      const item = this.items.find(item => item.id === id)
       if (item) {
-        item.quantity++
-        this.saveToLocalStorage()
-      }
-    },
-
-    decrementQuantity(id: string) {
-      const item = this.items.find(i => i.id === id)
-      if (item && item.quantity > 1) {
-        item.quantity--
-        this.saveToLocalStorage()
+        if (quantity <= 0) {
+          this.removeFromCart(id)
+        } else {
+          item.quantity = quantity
+          this.saveToLocalStorage()
+        }
       }
     },
 
@@ -68,16 +69,16 @@ export const useCartStore = defineStore('cart', {
       this.saveToLocalStorage()
     },
 
+    toggleCart() {
+      this.isOpen = !this.isOpen
+    },
+
     openCart() {
       this.isOpen = true
     },
 
     closeCart() {
       this.isOpen = false
-    },
-
-    toggleCart() {
-      this.isOpen = !this.isOpen
     },
 
     saveToLocalStorage() {
@@ -93,7 +94,7 @@ export const useCartStore = defineStore('cart', {
           try {
             this.items = JSON.parse(saved)
           } catch (e) {
-            console.error('Error loading cart from localStorage:', e)
+            console.error('Failed to load cart from localStorage:', e)
           }
         }
       }

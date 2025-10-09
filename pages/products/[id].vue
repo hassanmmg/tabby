@@ -1,116 +1,113 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12">
-    <div class="container mx-auto px-4">
-      <div v-if="loading" class="text-center py-20">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
-      </div>
-      
-      <div v-else-if="product" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <!-- Product Images -->
-        <div>
-          <div class="bg-white rounded-lg overflow-hidden">
-            <img 
-              :src="product.image || '/images/placeholder.svg'" 
-              :alt="product.name"
-              class="w-full h-96 object-cover"
-            />
-          </div>
-          <div v-if="product.additionalImages" class="grid grid-cols-4 gap-2 mt-4">
-            <img 
-              v-for="(img, index) in product.additionalImages" 
-              :key="index"
-              :src="img" 
-              :alt="`${product.name} ${index + 1}`"
-              class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-75"
-              @click="changeMainImage(img)"
-            />
-          </div>
+  <div>
+    <Navbar />
+    <div class="min-h-screen bg-white py-12">
+      <div class="container mx-auto px-4">
+        <div v-if="loading" class="text-center py-20">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
         </div>
 
-        <!-- Product Info -->
-        <div>
-          <div class="mb-4">
-            <nav class="text-sm">
-              <NuxtLink to="/" class="text-gray-500 hover:text-gray-700">Home</NuxtLink>
-              <span class="mx-2 text-gray-400">/</span>
-              <NuxtLink to="/products" class="text-gray-500 hover:text-gray-700">Products</NuxtLink>
-              <span class="mx-2 text-gray-400">/</span>
-              <span class="text-gray-900">{{ product.name }}</span>
-            </nav>
-          </div>
-
-          <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
-          
-          <div class="mb-6">
-            <p class="text-sm text-gray-500 mb-2">SKU: {{ product.sku }}</p>
-            <p class="text-sm text-gray-500">Category: {{ product.category }}</p>
-          </div>
-
-          <div class="mb-6">
-            <div class="flex items-center gap-4">
-              <span v-if="product.originalPrice" class="text-2xl text-gray-400 line-through">
-                ${{ product.originalPrice }}
-              </span>
-              <span class="text-3xl font-bold text-red-500">${{ product.price }}</span>
-            </div>
-            <p v-if="product.inStock" class="text-green-600 mt-2">✓ In Stock</p>
-            <p v-else class="text-red-600 mt-2">Out of Stock</p>
-          </div>
-
-          <div class="mb-8">
-            <p class="text-gray-700">{{ product.description }}</p>
-          </div>
-
-          <!-- Specifications -->
-          <div v-if="product.specifications" class="mb-8">
-            <h3 class="text-lg font-semibold mb-4">Specifications</h3>
-            <div class="bg-gray-50 rounded p-4">
-              <dl class="space-y-2">
-                <div v-for="(value, key) in product.specifications" :key="key" class="flex">
-                  <dt class="font-medium text-gray-600 w-1/3">{{ key }}:</dt>
-                  <dd class="text-gray-900 w-2/3">{{ value }}</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          <!-- Add to Cart -->
-          <div class="flex items-center gap-4 mb-8">
-            <div class="flex items-center border rounded">
-              <button @click="decrementQuantity" class="px-4 py-2 hover:bg-gray-100">-</button>
-              <input 
-                v-model.number="quantity" 
-                type="number" 
-                min="1"
-                class="w-16 text-center border-x py-2"
+        <div v-else-if="product" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <!-- Product Image -->
+          <div>
+            <div class="bg-white border rounded-lg overflow-hidden p-8">
+              <img
+                v-if="product.image_url"
+                :src="product.image_url"
+                :alt="product.title"
+                class="w-full h-auto object-contain"
               />
-              <button @click="incrementQuantity" class="px-4 py-2 hover:bg-gray-100">+</button>
+              <div v-else class="w-full h-96 flex items-center justify-center bg-gray-100">
+                <svg class="w-32 h-32 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
             </div>
-            <button 
-              @click="addToCart"
-              :disabled="!product.inStock"
-              class="flex-1 bg-red-500 text-white py-3 px-6 rounded hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-            >
-              Add to Cart
-            </button>
           </div>
 
-          <!-- Additional Info -->
-          <div class="border-t pt-6">
-            <div class="space-y-2 text-sm text-gray-600">
-              <p>✓ Free shipping on orders over $100</p>
-              <p>✓ 30-day return policy</p>
-              <p>✓ Secure checkout</p>
+          <!-- Product Info -->
+          <div>
+            <h1 class="text-3xl font-bold mb-4">{{ product.title }}</h1>
+
+            <div v-if="product.part_no" class="mb-6">
+              <p class="text-sm text-gray-600">Part Number: {{ product.part_no }}</p>
+            </div>
+
+            <div class="mb-6 flex items-center gap-4">
+              <span class="text-4xl font-bold text-red-600">MYR {{ Number(product.price || 0).toFixed(2) }}</span>
+              <span v-if="product.stock_status?.includes('IN STOCK')" class="text-green-600 font-medium">In Stock</span>
+              <span v-else class="text-red-600 font-medium">Out of Stock</span>
+            </div>
+
+            <p class="text-sm text-gray-600 mb-6">All prices exclude SST</p>
+
+            <!-- Category and Brand -->
+            <div class="border-t border-b py-4 mb-6 space-y-2">
+              <div class="flex">
+                <span class="w-32 text-gray-600">Category</span>
+                <span class="font-medium">{{ product.category || 'Ceiling Fans' }}</span>
+              </div>
+              <div class="flex">
+                <span class="w-32 text-gray-600">Brand</span>
+                <span class="font-medium">{{ product.brand || 'KDK' }}</span>
+              </div>
+            </div>
+
+            <!-- Quantity -->
+            <div class="mb-6">
+              <p class="font-semibold mb-3">Quantity:</p>
+              <div class="flex items-center gap-4 mb-4">
+                <button @click="decrementQuantity" class="w-10 h-10 border hover:bg-gray-100">-</button>
+                <input
+                  v-model.number="quantity"
+                  type="number"
+                  min="1"
+                  class="w-20 text-center border py-2"
+                />
+                <button @click="incrementQuantity" class="w-10 h-10 border hover:bg-gray-100">+</button>
+              </div>
+
+              <!-- Buttons -->
+              <div class="space-y-3">
+                <button
+                  @click="addToCart"
+                  :disabled="!product.stock_status?.includes('IN STOCK')"
+                  class="w-full bg-red-600 text-white py-3 rounded hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  Add to Cart
+                </button>
+                <button
+                  @click="buyNow"
+                  :disabled="!product.stock_status?.includes('IN STOCK')"
+                  class="w-full bg-gray-900 text-white py-3 rounded hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                >
+                  Buy Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Shipping Information -->
+            <div class="bg-blue-50 border border-blue-200 rounded p-4">
+              <h3 class="font-semibold text-blue-900 mb-3">Shipping Information</h3>
+              <ul class="space-y-2 text-sm text-blue-900">
+                <li>• Free shipping on orders over MYR 500</li>
+                <li>• Fast shipping available</li>
+                <li>• Genuine OEM parts</li>
+                <li>• Expert support available</li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-else class="text-center py-20">
-        <p class="text-gray-500">Product not found</p>
-        <NuxtLink to="/products" class="text-red-500 hover:text-red-600 mt-4 inline-block">
-          Back to Products
-        </NuxtLink>
+        <div v-else class="text-center py-20">
+          <p class="text-gray-500">Product not found</p>
+          <NuxtLink to="/products" class="text-blue-600 hover:text-blue-700 mt-4 inline-block">
+            Back to Products
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
@@ -120,7 +117,9 @@
 import { useCartStore } from '@/stores/cart'
 
 const route = useRoute()
+const router = useRouter()
 const cartStore = useCartStore()
+const supabase = useSupabaseClient()
 
 const loading = ref(true)
 const product = ref(null)
@@ -136,50 +135,56 @@ const decrementQuantity = () => {
   }
 }
 
-const changeMainImage = (img) => {
-  product.value.image = img
-}
-
 const addToCart = () => {
-  if (!product.value || !product.value.inStock) return
-  
-  cartStore.addItem({
-    id: product.value.id,
-    name: product.value.name,
-    sku: product.value.sku,
-    price: product.value.price,
-    image: product.value.image,
-    quantity: quantity.value
-  })
-  
+  if (!product.value || !product.value.stock_status?.includes('IN STOCK')) return
+
+  for (let i = 0; i < quantity.value; i++) {
+    cartStore.addToCart({
+      id: product.value.id,
+      title: product.value.title,
+      price: product.value.price,
+      image_url: product.value.image_url
+    })
+  }
+
   cartStore.openCart()
 }
 
-// Fetch product data
+const buyNow = () => {
+  if (!product.value || !product.value.stock_status?.includes('IN STOCK')) return
+
+  // Clear cart and add only this product
+  cartStore.clearCart()
+
+  for (let i = 0; i < quantity.value; i++) {
+    cartStore.addToCart({
+      id: product.value.id,
+      title: product.value.title,
+      price: product.value.price,
+      image_url: product.value.image_url
+    })
+  }
+
+  // Go directly to checkout
+  router.push('/checkout')
+}
+
+// Fetch product data from Supabase
 onMounted(async () => {
   try {
-    // This would normally fetch from your API/database
-    // For now, using mock data
-    product.value = {
-      id: route.params.id,
-      name: 'Sample Product',
-      sku: 'SKU-001',
-      category: 'Equipment Parts',
-      price: 99.99,
-      originalPrice: 149.99,
-      description: 'High-quality replacement part for your equipment. Built to last with premium materials.',
-      image: '/images/product-placeholder.jpg',
-      inStock: true,
-      specifications: {
-        'Brand': 'Teknopuri',
-        'Weight': '2.5 kg',
-        'Dimensions': '30 x 20 x 10 cm',
-        'Material': 'Steel',
-        'Warranty': '1 Year'
-      }
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', route.params.id)
+      .single()
+
+    if (error) {
+      console.error('Error fetching product:', error)
+    } else {
+      product.value = data
     }
   } catch (error) {
-    console.error('Error fetching product:', error)
+    console.error('Error:', error)
   } finally {
     loading.value = false
   }

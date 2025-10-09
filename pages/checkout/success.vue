@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+  <div>
+    <Navbar />
+    <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
     <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
       <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,6 +31,7 @@
           Continue Shopping
         </NuxtLink>
       </div>
+    </div>
     </div>
   </div>
 </template>

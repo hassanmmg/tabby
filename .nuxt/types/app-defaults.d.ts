@@ -1,7 +1,7 @@
 
 declare module 'nuxt/app/defaults' {
-  type DefaultAsyncDataErrorValue = undefined
-  type DefaultAsyncDataValue = undefined
-  type DefaultErrorValue = undefined
-  type DedupeOption = 'cancel' | 'defer'
+  type DefaultAsyncDataErrorValue = null
+  type DefaultAsyncDataValue = null
+  type DefaultErrorValue = null
+  type DedupeOption = boolean | 'cancel' | 'defer'
 }
