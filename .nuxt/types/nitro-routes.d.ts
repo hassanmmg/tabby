@@ -6,6 +6,21 @@ declare module "nitropack/types" {
     '/api/orders': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/orders.post').default>>>>
     }
+    '/api/payments/chip/:id': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/payments/chip/[id].get').default>>>>
+    }
+    '/api/payments/chip/callback': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/payments/chip/callback.post').default>>>>
+    }
+    '/api/payments/chip/create': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/payments/chip/create.post').default>>>>
+    }
+    '/api/payments/chip/test': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/payments/chip/test.get').default>>>>
+    }
+    '/api/payments/chip/webhook': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/payments/chip/webhook.post').default>>>>
+    }
     '/api/products': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/products.get').default>>>>
     }

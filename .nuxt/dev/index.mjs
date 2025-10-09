@@ -1,5 +1,5 @@
 import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};import { tmpdir } from 'node:os';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getHeader, setHeader, getMethod, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getRouterParam, getResponseStatusText } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getHeader, setHeader, getMethod, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getRouterParam, getHeaders, getResponseStatusText } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/h3/dist/index.mjs';
 import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
@@ -663,9 +663,9 @@ const _inlineRuntimeConfig = {
       "clientOptions": {}
     }
   },
-  "chipBrandId": "",
-  "chipApiKey": "",
-  "chipSandbox": false,
+  "chipBrandId": "840663fe-5193-401b-9481-247d26236197",
+  "chipApiKey": "mHMKI8JYMx6ppgc_6l0zc9wmeTZ7-9KgMwkphaXddklYoeYpAIhUvH8FLBB5n02yCL3CIxJX3n3V1pb-Ha2tow==",
+  "chipSandbox": true,
   "supabase": {
     "serviceKey": ""
   },
@@ -1652,6 +1652,11 @@ const _Bk_KMV = lazyEventHandler(() => {
 });
 
 const _lazy_NUrLO1 = () => Promise.resolve().then(function () { return orders_post$1; });
+const _lazy_xdgJ0Y = () => Promise.resolve().then(function () { return _id__get$1; });
+const _lazy_K_lkNT = () => Promise.resolve().then(function () { return callback_post$1; });
+const _lazy_y6kl86 = () => Promise.resolve().then(function () { return create_post$1; });
+const _lazy_b_kYNa = () => Promise.resolve().then(function () { return test_get$1; });
+const _lazy_zsWW3y = () => Promise.resolve().then(function () { return webhook_post$1; });
 const _lazy_KKoBzT = () => Promise.resolve().then(function () { return products_get$1; });
 const _lazy_TqpwkH = () => Promise.resolve().then(function () { return renderer$1; });
 
@@ -1659,6 +1664,11 @@ const handlers = [
   { route: '', handler: _ZXlcd3, lazy: false, middleware: true, method: undefined },
   { route: '', handler: _HcyhuD, lazy: false, middleware: true, method: undefined },
   { route: '/api/orders', handler: _lazy_NUrLO1, lazy: true, middleware: false, method: "post" },
+  { route: '/api/payments/chip/:id', handler: _lazy_xdgJ0Y, lazy: true, middleware: false, method: "get" },
+  { route: '/api/payments/chip/callback', handler: _lazy_K_lkNT, lazy: true, middleware: false, method: "post" },
+  { route: '/api/payments/chip/create', handler: _lazy_y6kl86, lazy: true, middleware: false, method: "post" },
+  { route: '/api/payments/chip/test', handler: _lazy_b_kYNa, lazy: true, middleware: false, method: "get" },
+  { route: '/api/payments/chip/webhook', handler: _lazy_zsWW3y, lazy: true, middleware: false, method: "post" },
   { route: '/api/products', handler: _lazy_KKoBzT, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_TqpwkH, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
@@ -1993,6 +2003,280 @@ const orders_post = defineEventHandler(async (event) => {
 const orders_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: orders_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _id__get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const paymentId = getRouterParam(event, "id");
+  if (!paymentId) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Payment ID is required"
+    });
+  }
+  try {
+    const chipApiUrl = config.chipSandbox ? `https://api.chip-in.asia/v1/purchases/${paymentId}` : `https://api.chip-in.asia/v1/purchases/${paymentId}`;
+    const response = await $fetch(chipApiUrl, {
+      headers: {
+        "Authorization": `Bearer ${config.chipApiKey}`
+      }
+    });
+    let status = "pending";
+    if (response.status === "paid" || response.status === "success") {
+      status = "completed";
+    } else if (response.status === "failed" || response.status === "cancelled") {
+      status = "failed";
+    }
+    return {
+      success: true,
+      paymentId: response.id,
+      status,
+      chipStatus: response.status,
+      reference: response.reference,
+      amount: response.purchase?.total || 0,
+      data: response
+    };
+  } catch (error) {
+    console.error("Error fetching payment status:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.data?.message || "Failed to get payment status"
+    });
+  }
+});
+
+const _id__get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _id__get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const callback_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  console.log("CHIP callback received:", body);
+  try {
+    const { id, reference, status, transaction_data } = body;
+    if (!id || !reference || !status) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Invalid callback data"
+      });
+    }
+    let orderStatus = "pending";
+    let paymentStatus = status;
+    switch (status.toLowerCase()) {
+      case "success":
+      case "paid":
+        orderStatus = "paid";
+        paymentStatus = "completed";
+        break;
+      case "failed":
+      case "cancelled":
+        orderStatus = "cancelled";
+        paymentStatus = "failed";
+        break;
+      default:
+        orderStatus = "pending";
+        paymentStatus = "pending";
+    }
+    console.log("Payment status update:", {
+      orderId: reference,
+      paymentId: id,
+      status: paymentStatus,
+      orderStatus
+    });
+    return {
+      success: true,
+      message: "Callback processed successfully"
+    };
+  } catch (error) {
+    console.error("CHIP callback error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.statusMessage || "Failed to process callback"
+    });
+  }
+});
+
+const callback_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: callback_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const create_post = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const body = await readBody(event);
+  if (!body.orderId || !body.amount || !body.customerInfo) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Missing required fields"
+    });
+  }
+  if (!config.chipBrandId || config.chipBrandId === "your_brand_id_here" || !config.chipApiKey || config.chipApiKey === "your_api_key_here") {
+    console.log("CHIP credentials not configured, using mock payment flow");
+    return {
+      success: true,
+      paymentId: "mock_payment_" + Date.now(),
+      checkoutUrl: `/checkout/success?order_id=${body.orderId}&amount=${body.amount}&mock=true`,
+      reference: body.orderId,
+      mockMode: true,
+      message: "Using mock payment flow. Configure CHIP credentials for real payments."
+    };
+  }
+  try {
+    const chipApiUrl = config.chipSandbox ? "https://gate.chip-in.asia/api/v1/purchases/" : "https://gate.chip-in.asia/api/v1/purchases/";
+    let phoneNumber = body.customerInfo.phone || "";
+    if (phoneNumber && !phoneNumber.startsWith("+")) {
+      phoneNumber = phoneNumber.replace(/^0/, "");
+      phoneNumber = `+60${phoneNumber}`;
+    }
+    const origin = getHeader(event, "origin") || "http://localhost:3000";
+    const baseUrl = origin.includes("localhost") ? origin : "https://shop-teknopuri.vercel.app";
+    const successUrl = `${baseUrl}/checkout/success?order_id=${body.orderId}&amount=${body.amount}`;
+    const failureUrl = `${baseUrl}/checkout/failure?order_id=${body.orderId}`;
+    const callbackUrl = `${baseUrl}/api/payments/chip/callback`;
+    const chipPayload = {
+      brand_id: config.chipBrandId,
+      client: {
+        email: body.customerInfo.email,
+        phone: phoneNumber,
+        full_name: body.customerInfo.name || `${body.customerInfo.firstName} ${body.customerInfo.lastName}`.trim()
+      },
+      purchase: {
+        products: [{
+          name: `Order #${body.orderId}`,
+          price: Math.round(body.amount * 100),
+          // Convert to cents
+          quantity: 1
+        }],
+        currency: body.currency || "MYR"
+      },
+      redirect_url: successUrl,
+      callback_url: callbackUrl,
+      cancel_url: failureUrl,
+      reference: body.orderId
+    };
+    console.log("Creating CHIP payment:", {
+      orderId: body.orderId,
+      amount: body.amount,
+      brandId: config.chipBrandId,
+      url: chipApiUrl
+    });
+    console.log("CHIP request payload:", JSON.stringify(chipPayload, null, 2));
+    const response = await $fetch(chipApiUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${config.chipApiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: chipPayload
+    });
+    console.log("CHIP payment created successfully:", response.id);
+    return {
+      success: true,
+      paymentId: response.id,
+      checkoutUrl: response.checkout_url,
+      reference: body.orderId,
+      chipData: response
+    };
+  } catch (error) {
+    console.error("CHIP payment creation error:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.data?.message || "Failed to create payment session"
+    });
+  }
+});
+
+const create_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: create_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const test_get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  return {
+    success: true,
+    message: "CHIP Payment Gateway Configuration",
+    config: {
+      brandIdConfigured: !!config.chipBrandId && config.chipBrandId !== "your_brand_id_here",
+      apiKeyConfigured: !!config.chipApiKey && config.chipApiKey !== "your_api_key_here",
+      sandboxMode: config.chipSandbox,
+      apiUrl: config.chipSandbox ? "https://gate.chip-in.asia/api/v1/purchases (SANDBOX)" : "https://gate.chip-in.asia/api/v1/purchases (PRODUCTION)"
+    },
+    instructions: !config.chipBrandId || config.chipBrandId === "your_brand_id_here" ? {
+      message: "Please configure your CHIP credentials",
+      steps: [
+        "1. Sign up for a CHIP merchant account at https://merchant.chip-in.asia/",
+        "2. Get your Brand ID and API Key from the dashboard",
+        "3. Update your .env file with:",
+        "   CHIP_BRAND_ID=your_actual_brand_id",
+        "   CHIP_API_KEY=your_actual_api_key",
+        "   CHIP_SANDBOX=true (for testing)",
+        "4. Restart the server"
+      ]
+    } : null
+  };
+});
+
+const test_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: test_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const webhook_post = defineEventHandler(async (event) => {
+  useRuntimeConfig();
+  const body = await readBody(event);
+  const headers = getHeaders(event);
+  console.log("CHIP webhook received:", {
+    headers,
+    body
+  });
+  try {
+    const signature = headers["x-chip-signature"] || headers["chip-signature"];
+    if (signature) {
+    }
+    const { event_type, data } = body;
+    console.log("Processing webhook event:", event_type);
+    switch (event_type) {
+      case "purchase.success":
+      case "purchase.paid":
+        await handlePaymentSuccess(data);
+        break;
+      case "purchase.failed":
+      case "purchase.cancelled":
+        await handlePaymentFailure(data);
+        break;
+      case "purchase.pending":
+        await handlePaymentPending(data);
+        break;
+      default:
+        console.log("Unhandled webhook event:", event_type);
+    }
+    return {
+      success: true,
+      message: "Webhook processed successfully"
+    };
+  } catch (error) {
+    console.error("CHIP webhook error:", error);
+    return {
+      success: false,
+      error: error.message || "Failed to process webhook"
+    };
+  }
+});
+async function handlePaymentSuccess(data) {
+  console.log("Payment success:", data);
+}
+async function handlePaymentFailure(data) {
+  console.log("Payment failed:", data);
+}
+async function handlePaymentPending(data) {
+  console.log("Payment pending:", data);
+}
+
+const webhook_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: webhook_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const products_get = defineEventHandler(async (event) => {

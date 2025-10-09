@@ -59,18 +59,50 @@
           <!-- Payment Method -->
           <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
             <h2 class="text-lg sm:text-xl font-semibold mb-4">Payment Method</h2>
-            <div class="space-y-4">
-              <label class="flex items-center">
-                <input type="radio" v-model="paymentMethod" value="card" class="mr-3">
-                <span>Credit/Debit Card</span>
+            <div class="space-y-3">
+              <label class="flex items-center p-4 border rounded-md cursor-pointer hover:border-blue-400 transition-colors"
+                :class="paymentMethod === 'chip' ? 'border-blue-500 bg-blue-50' : ''">
+                <input
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="chip"
+                  class="mr-3"
+                  :disabled="processing"
+                >
+                <div>
+                  <p class="font-medium">CHIP Payment Gateway</p>
+                  <p class="text-xs text-gray-500">Pay securely with credit/debit card, online banking, or e-wallets</p>
+                </div>
               </label>
-              <label class="flex items-center">
-                <input type="radio" v-model="paymentMethod" value="paypal" class="mr-3">
-                <span>PayPal</span>
+
+              <label class="flex items-center p-4 border rounded-md cursor-pointer hover:border-blue-400 transition-colors"
+                :class="paymentMethod === 'bank_transfer' ? 'border-blue-500 bg-blue-50' : ''">
+                <input
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="bank_transfer"
+                  class="mr-3"
+                  :disabled="processing"
+                >
+                <div>
+                  <p class="font-medium">Bank Transfer</p>
+                  <p class="text-xs text-gray-500">Pay via manual bank transfer</p>
+                </div>
               </label>
-              <label class="flex items-center">
-                <input type="radio" v-model="paymentMethod" value="bank" class="mr-3">
-                <span>Bank Transfer</span>
+
+              <label class="flex items-center p-4 border rounded-md cursor-pointer hover:border-blue-400 transition-colors"
+                :class="paymentMethod === 'cod' ? 'border-blue-500 bg-blue-50' : ''">
+                <input
+                  type="radio"
+                  v-model="paymentMethod"
+                  value="cod"
+                  class="mr-3"
+                  :disabled="processing"
+                >
+                <div>
+                  <p class="font-medium">Cash on Delivery</p>
+                  <p class="text-xs text-gray-500">Pay when you receive your order</p>
+                </div>
               </label>
             </div>
           </div>
@@ -119,12 +151,17 @@
               </div>
             </div>
 
-            <button 
+            <!-- Error Message -->
+            <div v-if="errorMessage" class="mt-4 p-3 border-2 border-red-300 bg-red-50 rounded-md">
+              <p class="text-sm text-red-600">{{ errorMessage }}</p>
+            </div>
+
+            <button
               @click="placeOrder"
-              :disabled="!isFormValid"
-              class="w-full mt-6 bg-red-500 text-white py-3 rounded hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              :disabled="!isFormValid || processing"
+              class="w-full mt-6 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
             >
-              Place Order
+              {{ processing ? 'Processing...' : 'Place Order' }}
             </button>
           </div>
         </div>
@@ -154,11 +191,13 @@ const shippingAddress = ref({
   zipCode: ''
 })
 
-const paymentMethod = ref('card')
+const paymentMethod = ref('chip')
+const processing = ref(false)
+const errorMessage = ref('')
 
 const cartItems = computed(() => cartStore.items)
 const subtotal = computed(() => cartStore.subtotal)
-const shipping = computed(() => subtotal.value > 200 ? 0 : 15)
+const shipping = computed(() => subtotal.value > 500 ? 0 : 25)
 const total = computed(() => subtotal.value + shipping.value)
 
 const isFormValid = computed(() => {
@@ -176,19 +215,80 @@ const isFormValid = computed(() => {
 const placeOrder = async () => {
   if (!isFormValid.value) return
 
+  errorMessage.value = ''
+  processing.value = true
+
   try {
-    // Here you would integrate with your payment processor
-    // and create the order in your database
-    
-    // For now, we'll simulate success
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // Clear cart and redirect to success page
+    // Generate order number
+    const orderNumber = 'ORD-' + Date.now()
+
+    // Prepare order data
+    const orderData = {
+      orderNumber: orderNumber,
+      customerName: `${customerInfo.value.firstName} ${customerInfo.value.lastName}`,
+      customerEmail: customerInfo.value.email,
+      customerPhone: customerInfo.value.phone,
+      shippingAddress: shippingAddress.value,
+      paymentMethod: paymentMethod.value,
+      items: cartItems.value.map(item => ({
+        id: item.id,
+        title: item.title,
+        quantity: item.quantity,
+        price: item.price
+      })),
+      subtotal: subtotal.value,
+      shipping: shipping.value,
+      total: total.value,
+      createdAt: new Date().toISOString()
+    }
+
+    // Check if payment is required (for CHIP payment method)
+    if (paymentMethod.value === 'chip') {
+      // Create CHIP payment session
+      const paymentResponse = await $fetch('/api/payments/chip/create', {
+        method: 'POST',
+        body: {
+          orderId: orderNumber,
+          amount: total.value,
+          customerInfo: {
+            name: orderData.customerName,
+            email: orderData.customerEmail,
+            phone: orderData.customerPhone,
+            firstName: customerInfo.value.firstName,
+            lastName: customerInfo.value.lastName
+          },
+          currency: 'MYR'
+        }
+      })
+
+      if (paymentResponse.success && paymentResponse.checkoutUrl) {
+        // Save order data to localStorage before redirect
+        localStorage.setItem('pendingOrder', JSON.stringify(orderData))
+
+        // Redirect to CHIP payment page
+        window.location.href = paymentResponse.checkoutUrl
+        return
+      } else {
+        throw new Error('Failed to create payment session')
+      }
+    }
+
+    // For non-CHIP payment methods, show success immediately
+    // Save order to localStorage (in production, save to database)
+    localStorage.setItem('completedOrder', JSON.stringify(orderData))
+
+    // Clear cart
     cartStore.clearCart()
-    router.push('/checkout/success')
+
+    // Redirect to success page
+    router.push(`/checkout/success?order_id=${orderNumber}`)
+
   } catch (error) {
-    console.error('Order failed:', error)
-    router.push('/checkout/failure')
+    console.error('Checkout error:', error)
+    errorMessage.value = error.data?.statusMessage || 'An error occurred while processing your order. Please try again.'
+    window.scrollTo(0, 0)
+  } finally {
+    processing.value = false
   }
 }
 </script>

@@ -1,32 +1,95 @@
 <template>
   <div>
     <Navbar />
-    <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
-      <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
-        <div class="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </div>
+    <div class="min-h-screen bg-gray-50 py-12">
+      <div class="container mx-auto px-4 max-w-2xl">
+        <div class="bg-white p-8 rounded-lg shadow-sm text-center">
+          <!-- Error Icon -->
+          <div class="mb-6">
+            <svg class="w-20 h-20 text-red-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
 
-        <h1 class="text-2xl font-bold text-gray-900 mb-2">Order Failed</h1>
-        <p class="text-gray-600 mb-6">
-          We couldn't process your order. Please try again or contact support.
-        </p>
+          <!-- Title -->
+          <h1 class="text-3xl font-bold text-gray-900 mb-3">Payment Failed</h1>
+          <p class="text-gray-600 mb-8">Unfortunately, we couldn't process your payment. Please try again.</p>
 
-        <div class="bg-red-50 rounded p-4 mb-6">
-          <p class="text-sm text-gray-600">
-            If the problem persists, please contact our customer service team.
-          </p>
-        </div>
+          <!-- Order Details -->
+          <div class="bg-red-50 border border-red-200 rounded-md p-6 mb-8">
+            <p class="text-sm text-gray-600 mb-2">Order Reference:</p>
+            <p class="text-xl font-bold font-mono text-gray-900">{{ orderId }}</p>
+          </div>
 
-        <div class="space-y-3">
-          <NuxtLink to="/checkout" class="block w-full bg-red-500 text-white py-3 rounded hover:bg-red-600">
-            Try Again
-          </NuxtLink>
-          <NuxtLink to="/" class="block w-full border border-gray-300 py-3 rounded hover:bg-gray-50">
-            Back to Home
-          </NuxtLink>
+          <!-- Reasons -->
+          <div class="text-left mb-8 p-6 bg-gray-50 rounded-md">
+            <h3 class="font-semibold text-gray-900 mb-3">Common reasons for payment failure:</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Insufficient funds in your account</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Incorrect card details entered</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Card expired or blocked</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Payment was cancelled</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Transaction timeout or network error</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <NuxtLink
+              to="/checkout"
+              class="inline-block bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition-colors font-medium"
+            >
+              Try Again
+            </NuxtLink>
+            <NuxtLink
+              to="/products"
+              class="inline-block bg-gray-200 text-gray-800 px-8 py-3 rounded-md hover:bg-gray-300 transition-colors font-medium"
+            >
+              Continue Shopping
+            </NuxtLink>
+          </div>
+
+          <!-- Help Section -->
+          <div class="mt-12 pt-8 border-t">
+            <h3 class="font-semibold text-gray-900 mb-3">Need Help?</h3>
+            <p class="text-sm text-gray-600 mb-4">
+              If you continue to experience issues with your payment, please contact our support team.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center text-sm">
+              <a href="mailto:support@teknopuri.com" class="text-blue-600 hover:text-blue-700 font-medium">
+                Email Support
+              </a>
+              <span class="hidden sm:inline text-gray-300">|</span>
+              <a href="tel:+60123456789" class="text-blue-600 hover:text-blue-700 font-medium">
+                Call Us
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -34,4 +97,6 @@
 </template>
 
 <script setup>
+const route = useRoute()
+const orderId = ref(route.query.order_id || 'N/A')
 </script>
