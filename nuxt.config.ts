@@ -1,23 +1,5 @@
-import { writeFileSync, existsSync, mkdirSync } from 'fs'
-import { join } from 'path'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  hooks: {
-    'prepare:types': () => {
-      // Ensure TypeScript config files exist for build
-      const nuxtDir = join(process.cwd(), '.nuxt')
-      if (existsSync(nuxtDir)) {
-        const tsconfigFiles = ['tsconfig.app.json', 'tsconfig.shared.json', 'tsconfig.node.json']
-        for (const file of tsconfigFiles) {
-          const filePath = join(nuxtDir, file)
-          if (!existsSync(filePath)) {
-            writeFileSync(filePath, JSON.stringify({ extends: './tsconfig.json' }, null, 2))
-          }
-        }
-      }
-    }
-  },
   compatibilityDate: '2024-07-15',
   devtools: { enabled: false },
   experimental: {

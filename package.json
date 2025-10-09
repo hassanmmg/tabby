@@ -3,13 +3,11 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "node scripts/prepare-tsconfig.js && nuxt build",
+    "build": "nuxt build",
     "dev": "nuxi dev --no-fork",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "prepare-ts": "node scripts/prepare-tsconfig.js",
-    "vercel-build": "nuxt prepare && node scripts/prepare-tsconfig.js && nuxt build"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@nuxtjs/supabase": "^1.6.1",

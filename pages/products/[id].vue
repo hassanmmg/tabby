@@ -3,10 +3,10 @@
     <Navbar />
 
     <!-- Breadcrumb -->
-    <div class="bg-gray-50 border-b">
-      <div class="container mx-auto px-4 py-3">
+    <div class="bg-white border-b">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <nav class="text-sm text-gray-600">
-          <NuxtLink to="/" class="hover:text-gray-900">Home</NuxtLink>
+          <NuxtLink to="/" class="hover:text-blue-600">Home</NuxtLink>
           <span class="mx-2">/</span>
           <span v-if="product">{{ product.category || 'Products' }}</span>
           <span class="mx-2">/</span>
@@ -15,8 +15,8 @@
       </div>
     </div>
 
-    <div class="min-h-screen bg-white py-6 sm:py-12">
-      <div class="container mx-auto px-4">
+    <div class="min-h-screen bg-gray-50 py-6 sm:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div v-if="loading" class="text-center py-20">
           <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
         </div>
@@ -24,7 +24,7 @@
         <div v-else-if="product" class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
           <!-- Product Image -->
           <div>
-            <div class="bg-white border rounded-lg overflow-hidden p-4 sm:p-6 lg:p-8">
+            <div class="bg-white border border-gray-200 overflow-hidden p-8 sm:p-12 lg:p-16">
               <img
                 v-if="product.image_url"
                 :src="product.image_url"
@@ -47,42 +47,42 @@
               <p class="text-sm text-gray-600">Part Number: <span class="text-gray-900">{{ product.part_no }}</span></p>
             </div>
 
-            <div class="mb-6 bg-gray-50 border border-gray-200 rounded-lg p-6">
+            <div class="mb-6 border-t border-b border-gray-200 py-6">
               <div class="flex items-center justify-between">
                 <span class="text-3xl sm:text-4xl font-bold text-red-600">MYR {{ Number(product.price || 0).toFixed(2) }}</span>
-                <span v-if="product.stock_status?.includes('IN STOCK')" class="bg-green-100 text-green-700 px-4 py-1.5 rounded-md text-sm font-medium">In Stock</span>
-                <span v-else class="bg-red-100 text-red-700 px-4 py-1.5 rounded-md text-sm font-medium">Out of Stock</span>
+                <span v-if="product.stock_status?.includes('IN STOCK')" class="bg-green-100 text-green-700 px-4 py-1.5 rounded text-sm font-medium">In Stock</span>
+                <span v-else class="bg-red-100 text-red-700 px-4 py-1.5 rounded text-sm font-medium">Out of Stock</span>
               </div>
               <p class="text-sm text-gray-600 mt-3">All prices exclude SST</p>
             </div>
 
             <!-- Category and Brand -->
-            <div class="bg-white border border-gray-200 rounded-lg mb-6">
+            <div class="bg-white border border-gray-200 mb-6">
               <div class="grid grid-cols-2 divide-x divide-gray-200">
-                <div class="p-4">
-                  <p class="text-sm text-gray-600 mb-1">Category</p>
-                  <p class="font-medium text-gray-900">{{ product.category }}</p>
+                <div class="p-5">
+                  <p class="text-sm text-gray-600 mb-1.5">Category</p>
+                  <p class="font-normal text-gray-900">{{ product.category }}</p>
                 </div>
-                <div class="p-4">
-                  <p class="text-sm text-gray-600 mb-1">Brand</p>
-                  <p class="font-medium text-gray-900">{{ product.brand }}</p>
+                <div class="p-5">
+                  <p class="text-sm text-gray-600 mb-1.5">Brand</p>
+                  <p class="font-normal text-gray-900">{{ product.brand }}</p>
                 </div>
               </div>
             </div>
 
             <!-- Quantity -->
             <div class="mb-6">
-              <div class="bg-white border border-gray-200 rounded-lg p-6">
-                <p class="font-medium text-sm mb-3 text-gray-900">Quantity:</p>
-                <div class="flex items-center gap-2 mb-4">
-                  <button @click="decrementQuantity" class="w-10 h-10 border border-gray-300 hover:bg-gray-100 rounded font-semibold text-gray-700 transition-colors">-</button>
+              <div class="bg-white border border-gray-200 p-6">
+                <p class="font-semibold text-base mb-4 text-gray-900">Quantity:</p>
+                <div class="flex items-center gap-3 mb-6">
+                  <button @click="decrementQuantity" class="w-10 h-10 border border-gray-300 hover:bg-gray-100 font-semibold text-gray-700 transition-colors">-</button>
                   <input
                     v-model.number="quantity"
                     type="number"
                     min="1"
-                    class="w-16 text-center border border-gray-300 py-2 rounded font-medium"
+                    class="w-20 text-center border border-gray-300 py-2 font-medium"
                   />
-                  <button @click="incrementQuantity" class="w-10 h-10 border border-gray-300 hover:bg-gray-100 rounded font-semibold text-gray-700 transition-colors">+</button>
+                  <button @click="incrementQuantity" class="w-10 h-10 border border-gray-300 hover:bg-gray-100 font-semibold text-gray-700 transition-colors">+</button>
                 </div>
 
                 <!-- Buttons -->
@@ -90,9 +90,9 @@
                   <button
                     @click="addToCart"
                     :disabled="!product.stock_status?.includes('IN STOCK')"
-                    class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 active:bg-red-800 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium text-sm shadow-sm transition-colors"
+                    class="w-full bg-blue-600 text-white py-3.5 hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium text-base transition-colors"
                   >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                     Add to Cart
@@ -100,7 +100,7 @@
                   <button
                     @click="buyNow"
                     :disabled="!product.stock_status?.includes('IN STOCK')"
-                    class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 active:bg-gray-950 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium text-sm shadow-sm transition-colors"
+                    class="w-full bg-gray-900 text-white py-3.5 hover:bg-gray-800 active:bg-gray-950 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium text-base transition-colors"
                   >
                     Buy Now
                   </button>
@@ -111,21 +111,21 @@
         </div>
 
         <!-- Shipping Information -->
-        <div v-if="product" class="mt-12 max-w-3xl">
-          <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Shipping Information</h3>
-            <ul class="space-y-2 text-sm text-gray-700">
+        <div v-if="product" class="mt-12">
+          <div class="bg-blue-50 border border-blue-200 p-6">
+            <h3 class="text-base font-semibold text-gray-900 mb-3">Shipping Information</h3>
+            <ul class="space-y-2 text-sm text-blue-700">
               <li class="flex items-start">
-                <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
+                <span class="mr-2">•</span>
                 <span>Free shipping on orders over MYR 500</span>
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
+                <span class="mr-2">•</span>
                 <span>Fast shipping available</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2">•</span>
+                <span>Genuine OEM parts</span>
               </li>
             </ul>
           </div>
