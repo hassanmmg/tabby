@@ -14,7 +14,22 @@ export default <Partial<Config>>{
       colors: {
         'tvh-red': '#e30613',
         'tvh-dark': '#1a1a1a',
-      }
+      },
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'sans-serif'
+        ],
+      },
+      letterSpacing: {
+        tighter: '-0.02em',
+        tight: '-0.01em',
+      },
     },
   },
   plugins: [],

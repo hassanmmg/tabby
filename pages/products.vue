@@ -3,24 +3,24 @@
     <Navbar />
 
     <div class="max-w-7xl mx-auto px-4 py-6">
-      <div class="flex gap-6">
+      <div class="flex flex-col lg:flex-row gap-6">
         <!-- Sidebar Filters -->
-        <aside class="w-72 flex-shrink-0">
-          <div class="bg-white shadow-sm border border-gray-200 p-6 sticky top-6">
+        <aside class="w-full lg:w-72 lg:flex-shrink-0">
+          <div class="bg-white shadow-sm border border-gray-200 p-4 sm:p-6 lg:sticky lg:top-6 rounded-lg">
             <!-- Search -->
             <div class="mb-6">
-              <h3 class="font-semibold text-lg mb-3">Search</h3>
+              <h3 class="font-medium text-sm mb-3 text-gray-900">Search</h3>
               <input
                 v-model="searchQuery"
                 type="text"
                 placeholder="Search by part # or name"
-                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
               />
             </div>
 
             <!-- Category -->
             <div class="mb-6">
-              <h3 class="font-semibold text-lg mb-3">Category</h3>
+              <h3 class="font-medium text-sm mb-3 text-gray-900">Category</h3>
               <div class="space-y-2">
                 <label
                   v-for="cat in categories"
@@ -43,12 +43,12 @@
 
             <!-- Brand -->
             <div class="mb-6">
-              <h3 class="font-semibold text-lg mb-3">Brand</h3>
+              <h3 class="font-medium text-sm mb-3 text-gray-900">Brand</h3>
               <div class="space-y-2">
                 <label
                   v-for="brand in brands"
                   :key="brand"
-                  class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded"
+                  class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors"
                 >
                   <input
                     type="checkbox"
@@ -56,26 +56,26 @@
                     v-model="selectedBrands"
                     class="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <span class="text-gray-700">{{ brand }}</span>
+                  <span class="text-sm text-gray-700">{{ brand }}</span>
                 </label>
               </div>
             </div>
 
             <!-- Price Range -->
             <div class="mb-6">
-              <h3 class="font-semibold text-lg mb-3">Price Range (RM)</h3>
+              <h3 class="font-medium text-sm mb-3 text-gray-900">Price Range (RM)</h3>
               <div class="flex gap-2">
                 <input
                   v-model.number="minPrice"
                   type="number"
                   placeholder="Min"
-                  class="w-1/2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                  class="w-1/2 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 />
                 <input
                   v-model.number="maxPrice"
                   type="number"
                   placeholder="Max"
-                  class="w-1/2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                  class="w-1/2 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 />
               </div>
             </div>
@@ -83,7 +83,7 @@
             <button
               v-if="hasActiveFilters"
               @click="clearFilters"
-              class="w-full text-blue-600 hover:text-blue-700 text-sm font-medium"
+              class="w-full text-blue-600 hover:text-blue-700 text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors"
             >
               Clear all filters
             </button>
@@ -103,16 +103,16 @@
               v-for="product in filteredProducts"
               :key="product.id"
               :to="`/products/${product.id}`"
-              class="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden block"
+              class="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden block group"
             >
               <!-- In Stock Badge -->
               <div class="relative">
-                <span class="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded z-10">
+                <span class="absolute top-2 right-2 sm:top-3 sm:right-3 bg-green-500 text-white text-xs font-semibold px-2.5 py-1 sm:px-3 rounded-md z-10 shadow-sm">
                   In Stock
                 </span>
 
                 <!-- Product Image -->
-                <div class="aspect-square bg-white flex items-center justify-center p-8">
+                <div class="aspect-square bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8 group-hover:bg-gray-50 transition-colors">
                   <img
                     :src="product.image_url"
                     :alt="product.title"
@@ -123,23 +123,20 @@
               </div>
 
               <!-- Product Info -->
-              <div class="p-5">
-                <h3 class="font-semibold text-base text-gray-900 mb-2 line-clamp-2">
+              <div class="p-4 sm:p-5 border-t border-gray-100">
+                <h3 class="font-normal text-sm sm:text-base text-gray-900 mb-1.5 line-clamp-2 leading-normal">
                   {{ product.title }}
                 </h3>
-                <p v-if="product.part_no" class="text-sm text-gray-500 mb-3">{{ product.part_no }}</p>
-                <p v-if="product.description" class="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-                  {{ product.description }}
-                </p>
+                <p v-if="product.part_no" class="text-xs sm:text-sm text-gray-500 mb-4">{{ product.part_no }}</p>
 
                 <!-- Price and Button -->
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-bold text-gray-900">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-4">
+                  <span class="text-lg font-bold text-gray-900">
                     MYR {{ product.price?.toFixed(2) || '0.00' }}
                   </span>
                   <button
                     @click.prevent.stop="addToCart(product)"
-                    class="bg-blue-600 text-white px-5 py-2 hover:bg-blue-700 transition-colors font-medium text-sm"
+                    class="w-full sm:w-auto bg-blue-600 text-white px-5 py-2.5 hover:bg-blue-700 active:bg-blue-800 transition-colors font-medium text-sm rounded-lg shadow-sm"
                   >
                     Add to Cart
                   </button>

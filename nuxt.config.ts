@@ -65,7 +65,8 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Quality cooling parts, seats and accessories for forklifts and industrial equipment' }
-      ]
+      ],
+      link: []
     }
   },
   runtimeConfig: {

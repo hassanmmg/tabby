@@ -1,21 +1,11 @@
 <template>
   <nav class="border-b sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-14">
+      <div class="flex justify-between items-center h-16">
         <!-- Logo -->
-        <NuxtLink to="/" class="font-semibold text-lg tracking-tight hover:opacity-70 transition-opacity">
+        <NuxtLink to="/" class="font-semibold text-lg tracking-normal hover:opacity-80 transition-opacity">
           TEKNOPURI
         </NuxtLink>
-
-        <!-- Desktop Navigation - Center -->
-        <div class="hidden md:flex items-center space-x-8">
-          <NuxtLink
-            to="/products/cooling-parts"
-            class="text-sm text-gray-600 hover:text-black transition-colors"
-          >
-            All Products
-          </NuxtLink>
-        </div>
 
         <!-- Right side - Cart -->
         <div class="flex items-center">

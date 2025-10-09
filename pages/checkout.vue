@@ -1,16 +1,16 @@
 <template>
   <div>
     <Navbar />
-    <div class="min-h-screen bg-gray-50 py-12">
+    <div class="min-h-screen bg-gray-50 py-6 sm:py-12">
       <div class="container mx-auto px-4">
-      <h1 class="text-3xl font-bold mb-8">Checkout</h1>
-      
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <h1 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Checkout</h1>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-6">
+        <div class="lg:col-span-2 space-y-4 sm:space-y-6">
           <!-- Customer Information -->
-          <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Customer Information</h2>
+          <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
+            <h2 class="text-lg sm:text-xl font-semibold mb-4">Customer Information</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium mb-2">First Name</label>
@@ -32,8 +32,8 @@
           </div>
 
           <!-- Shipping Address -->
-          <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Shipping Address</h2>
+          <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
+            <h2 class="text-lg sm:text-xl font-semibold mb-4">Shipping Address</h2>
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium mb-2">Street Address</label>
@@ -57,8 +57,8 @@
           </div>
 
           <!-- Payment Method -->
-          <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Payment Method</h2>
+          <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
+            <h2 class="text-lg sm:text-xl font-semibold mb-4">Payment Method</h2>
             <div class="space-y-4">
               <label class="flex items-center">
                 <input type="radio" v-model="paymentMethod" value="card" class="mr-3">
@@ -78,8 +78,8 @@
 
         <!-- Order Summary -->
         <div class="lg:col-span-1">
-          <div class="bg-white p-6 rounded-lg shadow sticky top-6">
-            <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+          <div class="bg-white p-4 sm:p-6 rounded-lg shadow lg:sticky lg:top-6">
+            <h2 class="text-lg sm:text-xl font-semibold mb-4">Order Summary</h2>
             
             <div class="space-y-4 mb-6">
               <div v-for="item in cartItems" :key="item.id" class="flex gap-4">
