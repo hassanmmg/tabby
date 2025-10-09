@@ -36,7 +36,7 @@
           <!-- Actions -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <NuxtLink
-              to="/products"
+              to="/"
               class="inline-block bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition-colors font-medium"
             >
               Continue Shopping

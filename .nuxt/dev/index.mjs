@@ -641,6 +641,8 @@ const _inlineRuntimeConfig = {
   },
   "public": {
     "apiBase": "/api",
+    "supabaseUrl": "https://rcusottqpctxlbkwqlhf.supabase.co",
+    "supabaseKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjdXNvdHRxcGN0eGxia3dxbGhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3Mzg3NjEsImV4cCI6MjA3NTMxNDc2MX0.1JYHidLY1xcpoeTFK6Rc5TCjs28sNZ-uP7WXhSZH1Yc",
     "supabase": {
       "url": "https://rcusottqpctxlbkwqlhf.supabase.co",
       "key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjdXNvdHRxcGN0eGxia3dxbGhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3Mzg3NjEsImV4cCI6MjA3NTMxNDc2MX0.1JYHidLY1xcpoeTFK6Rc5TCjs28sNZ-uP7WXhSZH1Yc",
@@ -666,6 +668,7 @@ const _inlineRuntimeConfig = {
   "chipBrandId": "840663fe-5193-401b-9481-247d26236197",
   "chipApiKey": "mHMKI8JYMx6ppgc_6l0zc9wmeTZ7-9KgMwkphaXddklYoeYpAIhUvH8FLBB5n02yCL3CIxJX3n3V1pb-Ha2tow==",
   "chipSandbox": true,
+  "supabaseServiceKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjdXNvdHRxcGN0eGxia3dxbGhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3Mzg3NjEsImV4cCI6MjA3NTMxNDc2MX0.1JYHidLY1xcpoeTFK6Rc5TCjs28sNZ-uP7WXhSZH1Yc",
   "supabase": {
     "serviceKey": ""
   },
@@ -1652,12 +1655,13 @@ const _Bk_KMV = lazyEventHandler(() => {
 });
 
 const _lazy_NUrLO1 = () => Promise.resolve().then(function () { return orders_post$1; });
-const _lazy_xdgJ0Y = () => Promise.resolve().then(function () { return _id__get$1; });
+const _lazy_xdgJ0Y = () => Promise.resolve().then(function () { return _id__get$3; });
 const _lazy_K_lkNT = () => Promise.resolve().then(function () { return callback_post$1; });
 const _lazy_y6kl86 = () => Promise.resolve().then(function () { return create_post$1; });
 const _lazy_b_kYNa = () => Promise.resolve().then(function () { return test_get$1; });
 const _lazy_zsWW3y = () => Promise.resolve().then(function () { return webhook_post$1; });
 const _lazy_KKoBzT = () => Promise.resolve().then(function () { return products_get$1; });
+const _lazy_wp5p7r = () => Promise.resolve().then(function () { return _id__get$1; });
 const _lazy_TqpwkH = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
@@ -1670,6 +1674,7 @@ const handlers = [
   { route: '/api/payments/chip/test', handler: _lazy_b_kYNa, lazy: true, middleware: false, method: "get" },
   { route: '/api/payments/chip/webhook', handler: _lazy_zsWW3y, lazy: true, middleware: false, method: "post" },
   { route: '/api/products', handler: _lazy_KKoBzT, lazy: true, middleware: false, method: "get" },
+  { route: '/api/products/:id', handler: _lazy_wp5p7r, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_TqpwkH, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/_ipx/**', handler: _Bk_KMV, lazy: false, middleware: false, method: undefined },
@@ -2005,7 +2010,7 @@ const orders_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
   default: orders_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const _id__get = defineEventHandler(async (event) => {
+const _id__get$2 = defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const paymentId = getRouterParam(event, "id");
   if (!paymentId) {
@@ -2045,9 +2050,9 @@ const _id__get = defineEventHandler(async (event) => {
   }
 });
 
-const _id__get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const _id__get$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  default: _id__get
+  default: _id__get$2
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const callback_post = defineEventHandler(async (event) => {
@@ -2325,6 +2330,41 @@ const products_get = defineEventHandler(async (event) => {
 const products_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: products_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _id__get = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const id = getRouterParam(event, "id");
+  if (!id) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Product ID is required"
+    });
+  }
+  const supabase = createClient(
+    config.public.supabaseUrl,
+    config.supabaseServiceKey
+  );
+  try {
+    const { data, error } = await supabase.from("products").select("*").eq("id", id).single();
+    if (error) {
+      throw createError({
+        statusCode: error.code === "PGRST116" ? 404 : 500,
+        statusMessage: error.code === "PGRST116" ? "Product not found" : error.message
+      });
+    }
+    return data;
+  } catch (error) {
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.statusMessage || "Internal Server Error"
+    });
+  }
+});
+
+const _id__get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _id__get
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {
