@@ -1,173 +1,175 @@
 <template>
-  <div>
-    <Navbar />
-    <div class="min-h-screen bg-gray-50 py-6 sm:py-12">
-      <div class="container mx-auto px-4">
-      <h1 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Checkout</h1>
+  <div class="bg-cream-100 min-h-screen">
+    <Navbar variant="solid" />
+    <div class="py-8 sm:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="font-heading text-2xl sm:text-3xl text-burgundy-900 mb-8">Checkout</h1>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-4 sm:space-y-6">
-          <!-- Customer Information -->
-          <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <h2 class="text-lg sm:text-xl font-semibold mb-4">Customer Information</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium mb-2">First Name</label>
-                <input v-model="customerInfo.firstName" type="text" class="w-full border rounded px-3 py-2">
-              </div>
-              <div>
-                <label class="block text-sm font-medium mb-2">Last Name</label>
-                <input v-model="customerInfo.lastName" type="text" class="w-full border rounded px-3 py-2">
-              </div>
-              <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-2">Email</label>
-                <input v-model="customerInfo.email" type="email" class="w-full border rounded px-3 py-2">
-              </div>
-              <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-2">Phone</label>
-                <input v-model="customerInfo.phone" type="tel" class="w-full border rounded px-3 py-2">
-              </div>
-            </div>
-          </div>
-
-          <!-- Shipping Address -->
-          <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <h2 class="text-lg sm:text-xl font-semibold mb-4">Shipping Address</h2>
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium mb-2">Street Address</label>
-                <input v-model="shippingAddress.street" type="text" class="w-full border rounded px-3 py-2">
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+          <!-- Main Content -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Customer Information -->
+            <div class="bg-white border border-cream-300 shadow-luxury p-5 sm:p-6">
+              <h2 class="font-heading text-lg sm:text-xl text-burgundy-900 mb-5">Customer Information</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium mb-2">City</label>
-                  <input v-model="shippingAddress.city" type="text" class="w-full border rounded px-3 py-2">
+                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">First Name</label>
+                  <input v-model="customerInfo.firstName" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-2">State</label>
-                  <input v-model="shippingAddress.state" type="text" class="w-full border rounded px-3 py-2">
+                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Last Name</label>
+                  <input v-model="customerInfo.lastName" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
                 </div>
-                <div>
-                  <label class="block text-sm font-medium mb-2">ZIP Code</label>
-                  <input v-model="shippingAddress.zipCode" type="text" class="w-full border rounded px-3 py-2">
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Email</label>
+                  <input v-model="customerInfo.email" type="email" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Phone</label>
+                  <input v-model="customerInfo.phone" type="tel" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Payment Method -->
-          <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <h2 class="text-lg sm:text-xl font-semibold mb-4">Payment Method</h2>
-            <div class="space-y-3">
-              <label class="flex items-center p-4 border rounded-md cursor-pointer hover:border-blue-400 transition-colors"
-                :class="paymentMethod === 'chip' ? 'border-blue-500 bg-blue-50' : ''">
-                <input
-                  type="radio"
-                  v-model="paymentMethod"
-                  value="chip"
-                  class="mr-3"
-                  :disabled="processing"
-                >
+            <!-- Shipping Address -->
+            <div class="bg-white border border-cream-300 shadow-luxury p-5 sm:p-6">
+              <h2 class="font-heading text-lg sm:text-xl text-burgundy-900 mb-5">Shipping Address</h2>
+              <div class="space-y-4">
                 <div>
-                  <p class="font-medium">CHIP Payment Gateway</p>
-                  <p class="text-xs text-gray-500">Pay securely with credit/debit card, online banking, or e-wallets</p>
+                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Street Address</label>
+                  <input v-model="shippingAddress.street" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
                 </div>
-              </label>
-
-              <label class="flex items-center p-4 border rounded-md cursor-pointer hover:border-blue-400 transition-colors"
-                :class="paymentMethod === 'bank_transfer' ? 'border-blue-500 bg-blue-50' : ''">
-                <input
-                  type="radio"
-                  v-model="paymentMethod"
-                  value="bank_transfer"
-                  class="mr-3"
-                  :disabled="processing"
-                >
-                <div>
-                  <p class="font-medium">Bank Transfer</p>
-                  <p class="text-xs text-gray-500">Pay via manual bank transfer</p>
-                </div>
-              </label>
-
-              <label class="flex items-center p-4 border rounded-md cursor-pointer hover:border-blue-400 transition-colors"
-                :class="paymentMethod === 'cod' ? 'border-blue-500 bg-blue-50' : ''">
-                <input
-                  type="radio"
-                  v-model="paymentMethod"
-                  value="cod"
-                  class="mr-3"
-                  :disabled="processing"
-                >
-                <div>
-                  <p class="font-medium">Cash on Delivery</p>
-                  <p class="text-xs text-gray-500">Pay when you receive your order</p>
-                </div>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Order Summary -->
-        <div class="lg:col-span-1">
-          <div class="bg-white p-4 sm:p-6 rounded-lg shadow lg:sticky lg:top-6">
-            <h2 class="text-lg sm:text-xl font-semibold mb-4">Order Summary</h2>
-            
-            <div class="space-y-4 mb-6">
-              <div v-for="item in cartItems" :key="item.id" class="flex gap-4">
-                <div class="w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
-                  <img
-                    v-if="item.image_url"
-                    :src="item.image_url"
-                    :alt="item.title"
-                    class="w-full h-full object-cover"
-                  />
-                  <div v-else class="w-full h-full flex items-center justify-center">
-                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">City</label>
+                    <input v-model="shippingAddress.city" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">State</label>
+                    <input v-model="shippingAddress.state" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">ZIP Code</label>
+                    <input v-model="shippingAddress.zipCode" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900 transition-colors">
                   </div>
                 </div>
-                <div class="flex-1">
-                  <p class="font-medium">{{ item.title }}</p>
-                  <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="bg-white border border-cream-300 shadow-luxury p-5 sm:p-6">
+              <h2 class="font-heading text-lg sm:text-xl text-burgundy-900 mb-5">Payment Method</h2>
+              <div class="space-y-3">
+                <label class="flex items-center p-4 border cursor-pointer transition-all duration-200"
+                  :class="paymentMethod === 'chip' ? 'border-burgundy-900 bg-burgundy-50' : 'border-cream-400 hover:border-burgundy-400'">
+                  <input
+                    type="radio"
+                    v-model="paymentMethod"
+                    value="chip"
+                    class="mr-4 accent-burgundy-900"
+                    :disabled="processing"
+                  >
+                  <div>
+                    <p class="font-medium text-burgundy-900">CHIP Payment Gateway</p>
+                    <p class="text-xs text-cream-600 mt-0.5">Pay securely with credit/debit card, online banking, or e-wallets</p>
+                  </div>
+                </label>
+
+                <label class="flex items-center p-4 border cursor-pointer transition-all duration-200"
+                  :class="paymentMethod === 'bank_transfer' ? 'border-burgundy-900 bg-burgundy-50' : 'border-cream-400 hover:border-burgundy-400'">
+                  <input
+                    type="radio"
+                    v-model="paymentMethod"
+                    value="bank_transfer"
+                    class="mr-4 accent-burgundy-900"
+                    :disabled="processing"
+                  >
+                  <div>
+                    <p class="font-medium text-burgundy-900">Bank Transfer</p>
+                    <p class="text-xs text-cream-600 mt-0.5">Pay via manual bank transfer</p>
+                  </div>
+                </label>
+
+                <label class="flex items-center p-4 border cursor-pointer transition-all duration-200"
+                  :class="paymentMethod === 'cod' ? 'border-burgundy-900 bg-burgundy-50' : 'border-cream-400 hover:border-burgundy-400'">
+                  <input
+                    type="radio"
+                    v-model="paymentMethod"
+                    value="cod"
+                    class="mr-4 accent-burgundy-900"
+                    :disabled="processing"
+                  >
+                  <div>
+                    <p class="font-medium text-burgundy-900">Cash on Delivery</p>
+                    <p class="text-xs text-cream-600 mt-0.5">Pay when you receive your order</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Summary -->
+          <div class="lg:col-span-1">
+            <div class="bg-white border border-cream-300 shadow-luxury p-5 sm:p-6 lg:sticky lg:top-20">
+              <h2 class="font-heading text-lg sm:text-xl text-burgundy-900 mb-5">Order Summary</h2>
+
+              <div class="space-y-4 mb-6">
+                <div v-for="item in cartItems" :key="item.id" class="flex gap-4">
+                  <div class="w-20 h-20 flex-shrink-0 bg-cream-100 border border-cream-300 overflow-hidden">
+                    <img
+                      v-if="item.image_url"
+                      :src="item.image_url"
+                      :alt="item.title"
+                      class="w-full h-full object-cover"
+                    />
+                    <div v-else class="w-full h-full flex items-center justify-center">
+                      <svg class="w-8 h-8 text-cream-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="flex-1">
+                    <p class="font-medium text-burgundy-900 text-sm">{{ item.title }}</p>
+                    <p class="text-xs text-cream-600 mt-1">Qty: {{ item.quantity }}</p>
+                  </div>
+                  <span class="font-medium text-burgundy-900">MYR {{ (item.price * item.quantity).toFixed(2) }}</span>
                 </div>
-                <span class="font-medium">MYR {{ (item.price * item.quantity).toFixed(2) }}</span>
               </div>
-            </div>
 
-            <div class="border-t pt-4 space-y-2">
-              <div class="flex justify-between">
-                <span>Subtotal</span>
-                <span>MYR {{ subtotal.toFixed(2) }}</span>
+              <div class="border-t border-cream-300 pt-4 space-y-3">
+                <div class="flex justify-between text-cream-700">
+                  <span>Subtotal</span>
+                  <span>MYR {{ subtotal.toFixed(2) }}</span>
+                </div>
+                <div class="flex justify-between text-cream-700">
+                  <span>Shipping</span>
+                  <span>MYR {{ shipping.toFixed(2) }}</span>
+                </div>
+                <div class="border-t border-cream-300 pt-3 flex justify-between text-lg font-heading text-burgundy-900">
+                  <span>Total</span>
+                  <span>MYR {{ total.toFixed(2) }}</span>
+                </div>
               </div>
-              <div class="flex justify-between">
-                <span>Shipping</span>
-                <span>MYR {{ shipping.toFixed(2) }}</span>
-              </div>
-              <div class="border-t pt-2 flex justify-between text-lg font-semibold">
-                <span>Total</span>
-                <span>MYR {{ total.toFixed(2) }}</span>
-              </div>
-            </div>
 
-            <!-- Error Message -->
-            <div v-if="errorMessage" class="mt-4 p-3 border-2 border-red-300 bg-red-50 rounded-md">
-              <p class="text-sm text-red-600">{{ errorMessage }}</p>
-            </div>
+              <!-- Error Message -->
+              <div v-if="errorMessage" class="mt-4 p-4 border border-red-300 bg-red-50">
+                <p class="text-sm text-red-700">{{ errorMessage }}</p>
+              </div>
 
-            <button
-              @click="placeOrder"
-              :disabled="!isFormValid || processing"
-              class="w-full mt-6 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-            >
-              {{ processing ? 'Processing...' : 'Place Order' }}
-            </button>
+              <button
+                @click="placeOrder"
+                :disabled="!isFormValid || processing"
+                class="w-full mt-6 bg-burgundy-900 text-white py-4 font-medium tracking-wide hover:bg-burgundy-800 disabled:bg-cream-400 disabled:cursor-not-allowed transition-colors"
+              >
+                {{ processing ? 'Processing...' : 'Place Order' }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      </div>
     </div>
+
+    <AppFooter />
   </div>
 </template>
 
@@ -219,10 +221,8 @@ const placeOrder = async () => {
   processing.value = true
 
   try {
-    // Generate order number
     const orderNumber = 'ORD-' + Date.now()
 
-    // Prepare order data
     const orderData = {
       orderNumber: orderNumber,
       customerName: `${customerInfo.value.firstName} ${customerInfo.value.lastName}`,
@@ -242,9 +242,7 @@ const placeOrder = async () => {
       createdAt: new Date().toISOString()
     }
 
-    // Check if payment is required (for CHIP payment method)
     if (paymentMethod.value === 'chip') {
-      // Create CHIP payment session
       const paymentResponse = await $fetch('/api/payments/chip/create', {
         method: 'POST',
         body: {
@@ -262,10 +260,7 @@ const placeOrder = async () => {
       })
 
       if (paymentResponse.success && paymentResponse.checkoutUrl) {
-        // Save order data to localStorage before redirect
         localStorage.setItem('pendingOrder', JSON.stringify(orderData))
-
-        // Redirect to CHIP payment page
         window.location.href = paymentResponse.checkoutUrl
         return
       } else {
@@ -273,14 +268,8 @@ const placeOrder = async () => {
       }
     }
 
-    // For non-CHIP payment methods, show success immediately
-    // Save order to localStorage (in production, save to database)
     localStorage.setItem('completedOrder', JSON.stringify(orderData))
-
-    // Clear cart
     cartStore.clearCart()
-
-    // Redirect to success page
     router.push(`/checkout/success?order_id=${orderNumber}`)
 
   } catch (error) {

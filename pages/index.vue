@@ -1,157 +1,98 @@
 <template>
-  <div class="bg-gray-50 min-h-screen">
-    <Navbar />
+  <div class="bg-cream-100 min-h-screen">
+    <!-- Hero Section with overlaying navbar -->
+    <div class="relative">
+      <Navbar variant="transparent" />
+      <BannerCarousel />
+    </div>
 
-    <div class="max-w-7xl mx-auto px-4 py-6">
-      <div class="flex flex-col lg:flex-row gap-6">
-        <!-- Sidebar Filters -->
-        <aside class="w-full lg:w-72 lg:flex-shrink-0">
-          <div class="bg-white shadow-sm border border-gray-200 p-4 sm:p-6 lg:sticky lg:top-6 rounded-lg">
-            <!-- Search -->
-            <div class="mb-6">
-              <h3 class="font-medium text-sm mb-3 text-gray-900">Search</h3>
-              <input
-                v-model="searchQuery"
-                type="text"
-                placeholder="Search by part # or name"
-                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-              />
-            </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <!-- Section Header -->
+      <div class="text-center mb-10">
+        <h2 class="font-heading text-3xl md:text-4xl text-burgundy-900 mb-3">Our Collection</h2>
+        <p class="text-cream-700 max-w-2xl mx-auto">Discover our premium selection of industrial parts and equipment</p>
+      </div>
 
-            <!-- Category -->
-            <div class="mb-6">
-              <h3 class="font-medium text-sm mb-3 text-gray-900">Category</h3>
-              <div class="space-y-2">
-                <label
-                  v-for="cat in categories"
-                  :key="cat.value"
-                  class="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded"
-                >
-                  <div class="flex items-center">
-                    <input
-                      type="checkbox"
-                      :value="cat.value"
-                      v-model="selectedCategories"
-                      class="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <span class="text-gray-700">{{ cat.label }}</span>
-                  </div>
-                  <span class="text-gray-500 text-sm">({{ cat.count }})</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Brand -->
-            <div class="mb-6">
-              <h3 class="font-medium text-sm mb-3 text-gray-900">Brand</h3>
-              <div class="space-y-2">
-                <label
-                  v-for="brand in brands"
-                  :key="brand"
-                  class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors"
-                >
-                  <input
-                    type="checkbox"
-                    :value="brand"
-                    v-model="selectedBrands"
-                    class="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <span class="text-sm text-gray-700">{{ brand }}</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Price Range -->
-            <div class="mb-6">
-              <h3 class="font-medium text-sm mb-3 text-gray-900">Price Range (RM)</h3>
-              <div class="flex gap-2">
-                <input
-                  v-model.number="minPrice"
-                  type="number"
-                  placeholder="Min"
-                  class="w-1/2 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                />
-                <input
-                  v-model.number="maxPrice"
-                  type="number"
-                  placeholder="Max"
-                  class="w-1/2 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                />
-              </div>
-            </div>
-
-            <button
-              v-if="hasActiveFilters"
-              @click="clearFilters"
-              class="w-full text-blue-600 hover:text-blue-700 text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Clear all filters
-            </button>
-          </div>
-        </aside>
-
+      <div>
         <!-- Products Grid -->
-        <main class="flex-1">
+        <main>
           <!-- Loading State -->
-          <div v-if="loading" class="flex justify-center py-12">
-            <div class="animate-spin h-12 w-12 border-b-2 border-blue-600"></div>
+          <div v-if="loading" class="flex justify-center py-16">
+            <div class="animate-spin h-12 w-12 border-2 border-cream-400 border-t-burgundy-900 rounded-full"></div>
           </div>
 
           <!-- Products -->
-          <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <NuxtLink
               v-for="product in filteredProducts"
               :key="product.id"
               :to="`/products/${product.id}`"
-              class="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden block group"
+              class="bg-white border border-cream-300 shadow-luxury hover:shadow-luxury-lg transition-all duration-300 overflow-hidden block group"
             >
-              <!-- In Stock Badge -->
               <div class="relative">
-                <span class="absolute top-2 right-2 sm:top-3 sm:right-3 bg-green-500 text-white text-xs font-semibold px-2.5 py-1 sm:px-3 rounded-md z-10 shadow-sm">
-                  In Stock
-                </span>
-
+                <!-- NEW Badge -->
+                <span class="absolute top-3 left-3 bg-burgundy-900 text-white text-xs px-3 py-1 z-10">NEW</span>
                 <!-- Product Image -->
-                <div class="aspect-square bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8 group-hover:bg-gray-50 transition-colors">
+                <div class="aspect-[3/4] bg-cream-50 overflow-hidden">
                   <img
                     :src="product.image_url"
                     :alt="product.title"
-                    class="w-full h-full object-contain"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     @error="handleImageError"
                   />
                 </div>
               </div>
 
               <!-- Product Info -->
-              <div class="p-4 sm:p-5 border-t border-gray-100">
-                <h3 class="font-normal text-sm sm:text-base text-gray-900 mb-1.5 line-clamp-2 leading-normal">
-                  {{ product.title }}
+              <div class="p-5 border-t border-cream-200">
+                <h3 class="font-heading text-lg sm:text-xl text-burgundy-900 mb-3">
+                  {{ product.title.split(' ')[0] }}
                 </h3>
-                <p v-if="product.part_no" class="text-xs sm:text-sm text-gray-500 mb-4">{{ product.part_no }}</p>
 
-                <!-- Price and Button -->
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-4">
-                  <span class="text-lg font-bold text-gray-900">
+                <!-- Price -->
+                <div>
+                  <span class="text-base text-burgundy-900">
                     MYR {{ product.price?.toFixed(2) || '0.00' }}
                   </span>
-                  <button
-                    @click.prevent.stop="addToCart(product)"
-                    class="w-full sm:w-auto bg-blue-600 text-white px-5 py-2.5 hover:bg-blue-700 active:bg-blue-800 transition-colors font-medium text-sm rounded-lg shadow-sm"
-                  >
-                    Add to Cart
-                  </button>
                 </div>
               </div>
             </NuxtLink>
           </div>
 
           <!-- No Products -->
-          <div v-if="!loading && filteredProducts.length === 0" class="text-center py-12">
-            <p class="text-gray-500 text-lg">No products found</p>
+          <div v-if="!loading && filteredProducts.length === 0" class="text-center py-16">
+            <p class="text-cream-600 text-lg">No products found</p>
           </div>
         </main>
       </div>
     </div>
+
+    <!-- Newsletter Section -->
+    <section class="bg-burgundy-900 py-20 md:py-28">
+      <div class="max-w-2xl mx-auto px-4 text-center">
+        <h2 class="font-heading text-2xl md:text-3xl text-white mb-4">Subscribe to our emails</h2>
+        <p class="text-cream-300 mb-8">Be the first to know about new collections and exclusive offers.</p>
+
+        <form @submit.prevent="handleSubscribe" class="relative max-w-md mx-auto">
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Enter email address"
+            class="w-full px-6 py-4 pr-14 rounded-full bg-burgundy-800/50 border border-burgundy-700 text-white placeholder-cream-400 focus:outline-none focus:border-cream-400 transition-colors"
+          />
+          <button
+            type="submit"
+            class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-burgundy-950 hover:bg-burgundy-800 rounded-full flex items-center justify-center transition-colors"
+          >
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <AppFooter />
   </div>
 </template>
 
@@ -163,6 +104,16 @@ const cartStore = ref(null)
 
 // State
 const allProducts = ref([])
+const email = ref('')
+
+// Newsletter subscribe
+const handleSubscribe = () => {
+  if (email.value) {
+    console.log('Subscribed:', email.value)
+    email.value = ''
+    alert('Thank you for subscribing!')
+  }
+}
 const loading = ref(true)
 const searchQuery = ref('')
 const selectedCategories = ref([])
@@ -170,18 +121,109 @@ const selectedBrands = ref([])
 const minPrice = ref(null)
 const maxPrice = ref(null)
 
+// Mock products for testing
+const mockProducts = [
+  {
+    id: 1,
+    title: 'Nara Coolmint',
+    description: 'Premium quality fabric with elegant design',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000',
+    category: 'Scarves',
+    brand: 'Tabby',
+    part_no: 'MINT-001',
+    stock_status: 'in_stock'
+  },
+  {
+    id: 2,
+    title: 'Nara Smokey',
+    description: 'Elegant signature collection piece',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Smokey-SQ-b.jpg?v=1765854993&width=1000',
+    category: 'Scarves',
+    brand: 'Tabby',
+    part_no: 'SMOKE-001',
+    stock_status: 'in_stock'
+  },
+  {
+    id: 3,
+    title: 'Nara Snow',
+    description: 'Luxurious silk fabric for everyday elegance',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-a.jpg?v=1765855990&width=1000',
+    category: 'Premium',
+    brand: 'Tabby',
+    part_no: 'SNOW-001',
+    stock_status: 'in_stock'
+  },
+  {
+    id: 4,
+    title: 'Nara Rosy',
+    description: 'Comfortable and stylish for daily wear',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-a.jpg?v=1765855405&width=1000',
+    category: 'Basics',
+    brand: 'Tabby',
+    part_no: 'ROSY-001',
+    stock_status: 'in_stock'
+  },
+  {
+    id: 6,
+    title: 'Nara Ube',
+    description: 'Light and airy for warm weather',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Ube-SQ-a.jpg?v=1765855299&width=1000',
+    category: 'Seasonal',
+    brand: 'Tabby',
+    part_no: 'UBE-001',
+    stock_status: 'in_stock'
+  },
+  {
+    id: 7,
+    title: 'Nara Cosmos',
+    description: 'Beautiful cosmic inspired design',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Cosmos-SQ-a.jpg?v=1765854958&width=996',
+    category: 'Premium',
+    brand: 'Tabby',
+    part_no: 'COSM-001',
+    stock_status: 'in_stock'
+  },
+  {
+    id: 8,
+    title: 'Nara Onyx',
+    description: 'Elegant dark sophistication',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-a.jpg?v=1765854942&width=1000',
+    category: 'Premium',
+    brand: 'Tabby',
+    part_no: 'ONYX-001',
+    stock_status: 'in_stock'
+  },
+  {
+    id: 9,
+    title: 'Nara Granola',
+    description: 'Warm earthy tones for everyday style',
+    price: 69.00,
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Granola-SQ-b.jpg?v=1765855045&width=998',
+    category: 'Basics',
+    brand: 'Tabby',
+    part_no: 'GRAN-001',
+    stock_status: 'in_stock'
+  }
+]
+
 // Fetch products from server API
 const fetchProducts = async () => {
   loading.value = true
   try {
     const data = await $fetch('/api/products')
-    allProducts.value = data || []
-    console.log(`Fetched ${allProducts.value.length} products`)
-    if (allProducts.value.length > 0) {
-      console.log('Sample product:', allProducts.value[0])
-    }
+    // Use API data if available, otherwise use mock products
+    allProducts.value = (data && data.length > 0) ? data : mockProducts
+    console.log(`Loaded ${allProducts.value.length} products`)
   } catch (err) {
-    console.error('Error fetching products:', err)
+    console.error('Error fetching products, using mock data:', err)
+    allProducts.value = mockProducts
   } finally {
     loading.value = false
   }
@@ -279,10 +321,10 @@ const addToCart = (product) => {
     })
     cartStore.value.openCart()
 
-    // Show notification
+    // Show notification with luxury styling
     const notification = document.createElement('div')
-    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 shadow-lg z-50 rounded'
-    notification.textContent = 'Product added to cart!'
+    notification.className = 'fixed top-20 right-4 bg-burgundy-900 text-white px-6 py-3 shadow-luxury-lg z-50 tracking-wide'
+    notification.textContent = 'Added to cart'
     document.body.appendChild(notification)
 
     setTimeout(() => {
@@ -295,7 +337,6 @@ const addToCart = (product) => {
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement
   console.error('Failed to load image:', target.src)
-  // Don't hide the image, let the fallback SVG show instead
   target.style.display = 'none'
   const fallback = target.nextElementSibling
   if (fallback) {

@@ -1,4 +1,4 @@
-# Teknopuri E-Shop Setup Guide
+# Tabby E-Shop Setup Guide
 
 ## Project Structure
 

@@ -1,33 +1,101 @@
+/* Import Playfair Display from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-	.no-scrollbar::-webkit-scrollbar {
-		display: none;
-	}
+@layer base {
+  /* Apply luxury typography defaults */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
 
-	.no-scrollbar {
-		-ms-overflow-style: none;
-		/* IE and Edge */
-		scrollbar-width: none;
-		/* Firefox */
-	}
+  body {
+    @apply font-sans text-cream-900 antialiased;
+  }
+}
+
+@layer components {
+  /* Luxury button styles */
+  .btn-primary {
+    @apply bg-burgundy-900 text-white px-6 py-3 font-medium tracking-wide
+           transition-all duration-300 ease-out
+           hover:bg-burgundy-800 active:bg-burgundy-950
+           focus:outline-none focus:ring-2 focus:ring-burgundy-900 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-burgundy-900 px-6 py-3 font-medium tracking-wide
+           border border-burgundy-900
+           transition-all duration-300 ease-out
+           hover:bg-burgundy-900 hover:text-white
+           focus:outline-none focus:ring-2 focus:ring-burgundy-900 focus:ring-offset-2;
+  }
+
+  .btn-tertiary {
+    @apply text-burgundy-900 font-medium tracking-wide
+           transition-colors duration-200
+           hover:text-burgundy-700
+           focus:outline-none focus:underline;
+  }
+
+  /* Luxury card styles */
+  .card-luxury {
+    @apply bg-white border border-cream-400 shadow-luxury
+           transition-shadow duration-300
+           hover:shadow-luxury-lg;
+  }
+
+  /* Luxury input styles */
+  .input-luxury {
+    @apply w-full px-4 py-3 bg-white border border-cream-400
+           text-cream-900 placeholder-cream-600
+           transition-all duration-200
+           focus:outline-none focus:border-burgundy-900 focus:ring-1 focus:ring-burgundy-900;
+  }
+
+  /* Luxury link styles */
+  .link-luxury {
+    @apply text-burgundy-900 font-medium
+           transition-colors duration-200
+           hover:text-burgundy-700;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Luxury text utilities */
+  .text-luxury-heading {
+    @apply font-heading tracking-tight;
+  }
+
+  .text-luxury-body {
+    @apply font-sans tracking-wide leading-relaxed;
+  }
 }
 
 html {
-	font-size: 12px;
-	@apply scroll-smooth;
+  font-size: 12px;
+  @apply scroll-smooth;
 
-	@screen sm {
-		font-size: 14px;
-	}
+  @screen sm {
+    font-size: 14px;
+  }
 
-	@screen md {
-		font-size: 15px;
-	}
+  @screen md {
+    font-size: 15px;
+  }
 
-	@screen lg {
-		font-size: 16px;
-	}
+  @screen lg {
+    font-size: 16px;
+  }
 }
