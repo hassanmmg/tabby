@@ -41,7 +41,7 @@
       <div class="absolute bottom-16 md:bottom-24 right-6 md:right-12 lg:right-16 flex gap-3 z-20">
         <button
           @click="prevSlide"
-          class="w-12 h-12 rounded-full bg-burgundy-900 flex items-center justify-center hover:bg-burgundy-800 transition-colors"
+          class="w-12 h-12 rounded-full bg-[#ea580c] flex items-center justify-center hover:bg-[#c2410c] transition-colors"
         >
           <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -49,9 +49,9 @@
         </button>
         <button
           @click="nextSlide"
-          class="w-12 h-12 rounded-full bg-white border border-burgundy-900 flex items-center justify-center hover:bg-cream-100 transition-colors"
+          class="w-12 h-12 rounded-full bg-white border border-[#ea580c] flex items-center justify-center hover:bg-cream-100 transition-colors"
         >
-          <svg class="w-5 h-5 text-burgundy-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 text-[#ea580c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -64,12 +64,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const slides = [
-  {
-    image: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-KLGCC-Collection-Slider-01.jpg?v=1761740419&width=3600',
-    subtitle: 'New Collection',
-    title: 'KLGCC Collection',
-    description: 'Elegance meets comfort in every piece.'
-  },
   {
     image: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Ilya-_-WF-Basic-Desktop.jpg?v=1758094600&width=3600',
     subtitle: 'Premium',

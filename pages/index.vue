@@ -9,7 +9,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <!-- Section Header -->
       <div class="text-center mb-10">
-        <h2 class="font-heading text-3xl md:text-4xl text-burgundy-900 mb-3">Our Collection</h2>
+        <h2 class="font-heading text-3xl md:text-4xl text-black mb-3">Our Collection</h2>
         <p class="text-cream-700 max-w-2xl mx-auto">Discover our premium selection of industrial parts and equipment</p>
       </div>
 
@@ -31,7 +31,7 @@
             >
               <div class="relative">
                 <!-- NEW Badge -->
-                <span class="absolute top-3 left-3 bg-burgundy-900 text-white text-xs px-3 py-1 z-10">NEW</span>
+                <span class="absolute top-3 left-3 bg-[#ea580c] text-white text-xs px-3 py-1 z-10">NEW</span>
                 <!-- Product Image -->
                 <div class="aspect-[3/4] bg-cream-50 overflow-hidden">
                   <img
@@ -45,13 +45,13 @@
 
               <!-- Product Info -->
               <div class="p-5 border-t border-cream-200">
-                <h3 class="font-heading text-lg sm:text-xl text-burgundy-900 mb-3">
+                <h3 class="font-heading text-lg sm:text-xl text-black mb-3">
                   {{ product.title.split(' ')[0] }}
                 </h3>
 
                 <!-- Price -->
                 <div>
-                  <span class="text-base text-burgundy-900">
+                  <span class="text-base text-black">
                     MYR {{ product.price?.toFixed(2) || '0.00' }}
                   </span>
                 </div>
@@ -67,31 +67,6 @@
       </div>
     </div>
 
-    <!-- Newsletter Section -->
-    <section class="bg-burgundy-900 py-20 md:py-28">
-      <div class="max-w-2xl mx-auto px-4 text-center">
-        <h2 class="font-heading text-2xl md:text-3xl text-white mb-4">Subscribe to our emails</h2>
-        <p class="text-cream-300 mb-8">Be the first to know about new collections and exclusive offers.</p>
-
-        <form @submit.prevent="handleSubscribe" class="relative max-w-md mx-auto">
-          <input
-            v-model="email"
-            type="email"
-            placeholder="Enter email address"
-            class="w-full px-6 py-4 pr-14 rounded-full bg-burgundy-800/50 border border-burgundy-700 text-white placeholder-cream-400 focus:outline-none focus:border-cream-400 transition-colors"
-          />
-          <button
-            type="submit"
-            class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-burgundy-950 hover:bg-burgundy-800 rounded-full flex items-center justify-center transition-colors"
-          >
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </button>
-        </form>
-      </div>
-    </section>
-
     <AppFooter />
   </div>
 </template>
@@ -104,16 +79,6 @@ const cartStore = ref(null)
 
 // State
 const allProducts = ref([])
-const email = ref('')
-
-// Newsletter subscribe
-const handleSubscribe = () => {
-  if (email.value) {
-    console.log('Subscribed:', email.value)
-    email.value = ''
-    alert('Thank you for subscribing!')
-  }
-}
 const loading = ref(true)
 const searchQuery = ref('')
 const selectedCategories = ref([])
@@ -217,12 +182,11 @@ const mockProducts = [
 const fetchProducts = async () => {
   loading.value = true
   try {
-    const data = await $fetch('/api/products')
-    // Use API data if available, otherwise use mock products
-    allProducts.value = (data && data.length > 0) ? data : mockProducts
+    // Use local mock products with local images
+    allProducts.value = mockProducts
     console.log(`Loaded ${allProducts.value.length} products`)
   } catch (err) {
-    console.error('Error fetching products, using mock data:', err)
+    console.error('Error fetching products:', err)
     allProducts.value = mockProducts
   } finally {
     loading.value = false

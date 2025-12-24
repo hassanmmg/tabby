@@ -42,13 +42,15 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   app: {
     head: {
-      title: 'Tabby - Premium Parts & Equipment',
+      title: 'Tabby Scarves',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Quality cooling parts, seats and accessories for forklifts and industrial equipment' }
       ],
-      link: []
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      ]
     }
   },
   runtimeConfig: {

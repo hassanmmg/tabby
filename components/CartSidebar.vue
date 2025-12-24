@@ -29,7 +29,7 @@
                 <div class="flex h-full flex-col overflow-y-scroll bg-cream-50 shadow-luxury-lg">
                   <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                     <div class="flex items-start justify-between">
-                      <DialogTitle class="font-heading text-xl text-burgundy-900">Shopping Cart</DialogTitle>
+                      <DialogTitle class="font-heading text-xl text-black">Shopping Cart</DialogTitle>
                       <div class="ml-3 flex h-7 items-center">
                         <button
                           type="button"
@@ -63,7 +63,7 @@
 
                             <div class="ml-4 flex flex-1 flex-col">
                               <div>
-                                <div class="flex justify-between text-base font-medium text-burgundy-900">
+                                <div class="flex justify-between text-base font-medium text-black">
                                   <h3>{{ item.title }}</h3>
                                   <p class="ml-4">MYR {{ Number(item.price || 0).toFixed(2) }}</p>
                                 </div>
@@ -72,14 +72,14 @@
                                 <div class="flex items-center">
                                   <button
                                     @click="cartStore.updateQuantity(item.id, item.quantity - 1)"
-                                    class="px-3 py-1 border border-cream-400 text-burgundy-900 hover:bg-cream-200 transition-colors"
+                                    class="px-3 py-1 border border-cream-400 text-black hover:bg-cream-200 transition-colors"
                                   >
                                     -
                                   </button>
-                                  <span class="mx-3 w-8 text-center text-burgundy-900">{{ item.quantity }}</span>
+                                  <span class="mx-3 w-8 text-center text-black">{{ item.quantity }}</span>
                                   <button
                                     @click="cartStore.updateQuantity(item.id, item.quantity + 1)"
-                                    class="px-3 py-1 border border-cream-400 text-burgundy-900 hover:bg-cream-200 transition-colors"
+                                    class="px-3 py-1 border border-cream-400 text-black hover:bg-cream-200 transition-colors"
                                   >
                                     +
                                   </button>
@@ -89,7 +89,7 @@
                                   <button
                                     type="button"
                                     @click="cartStore.removeFromCart(item.id)"
-                                    class="font-medium text-burgundy-900 hover:text-burgundy-700 transition-colors"
+                                    class="font-medium text-black hover:text-black/70 transition-colors"
                                   >
                                     Remove
                                   </button>
@@ -106,7 +106,7 @@
                   </div>
 
                   <div v-if="cartStore.items.length > 0" class="border-t border-cream-300 px-4 py-6 sm:px-6 bg-white">
-                    <div class="flex justify-between text-base font-medium text-burgundy-900">
+                    <div class="flex justify-between text-base font-medium text-black">
                       <p>Subtotal</p>
                       <p>MYR {{ Number(cartStore.subtotal || 0).toFixed(2) }}</p>
                     </div>
@@ -115,7 +115,7 @@
                       <NuxtLink
                         to="/checkout"
                         @click="cartStore.closeCart"
-                        class="flex items-center justify-center bg-burgundy-900 px-6 py-3 text-base font-medium text-white tracking-wide hover:bg-burgundy-800 transition-colors"
+                        class="flex items-center justify-center bg-[#ea580c] px-6 py-3 text-base font-medium text-white tracking-wide hover:bg-[#c2410c] transition-colors"
                       >
                         Checkout
                       </NuxtLink>
@@ -125,7 +125,7 @@
                         or
                         <button
                           type="button"
-                          class="font-medium text-burgundy-900 hover:text-burgundy-700 transition-colors ml-1"
+                          class="font-medium text-black hover:text-black/70 transition-colors ml-1"
                           @click="cartStore.closeCart"
                         >
                           Continue Shopping

@@ -1,44 +1,44 @@
 import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};import { tmpdir } from 'node:os';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getHeader, setHeader, getMethod, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getRouterParam, getHeaders, getResponseStatusText } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getHeader, setHeader, getMethod, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getRouterParam, getHeaders, getResponseStatusText } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/h3/dist/index.mjs';
 import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { escapeHtml } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/@vue/shared/dist/shared.cjs.js';
-import { createClient } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/@supabase/supabase-js/dist/main/index.js';
-import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/vue-bundle-renderer/dist/runtime.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/ufo/dist/index.mjs';
-import { renderToString } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/vue/server-renderer/index.mjs';
-import destr, { destr as destr$1 } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/destr/dist/index.mjs';
-import { createHooks } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/hookable/dist/index.mjs';
-import { createFetch, Headers as Headers$1 } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/ofetch/dist/node.mjs';
-import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/node-mock-http/dist/index.mjs';
-import { createStorage, prefixStorage } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/unstorage/drivers/fs.mjs';
-import { digest } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/ohash/dist/index.mjs';
-import { klona } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/klona/dist/index.mjs';
-import defu, { defuFn } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/defu/dist/defu.mjs';
-import { snakeCase } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/scule/dist/index.mjs';
-import { getContext } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/unctx/dist/index.mjs';
-import { toRouteMatcher, createRouter } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/radix3/dist/index.mjs';
+import { escapeHtml } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/@vue/shared/dist/shared.cjs.js';
+import { createClient } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/@supabase/supabase-js/dist/main/index.js';
+import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/ufo/dist/index.mjs';
+import { renderToString } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/vue/server-renderer/index.mjs';
+import destr, { destr as destr$1 } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/destr/dist/index.mjs';
+import { createHooks } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/hookable/dist/index.mjs';
+import { createFetch, Headers as Headers$1 } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/ofetch/dist/node.mjs';
+import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/node-mock-http/dist/index.mjs';
+import { createStorage, prefixStorage } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/unstorage/drivers/fs.mjs';
+import { digest } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/ohash/dist/index.mjs';
+import { klona } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/klona/dist/index.mjs';
+import defu, { defuFn } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/defu/dist/defu.mjs';
+import { snakeCase } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/scule/dist/index.mjs';
+import { getContext } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/unctx/dist/index.mjs';
+import { toRouteMatcher, createRouter } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/radix3/dist/index.mjs';
 import { readFile } from 'node:fs/promises';
-import consola, { consola as consola$1 } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/consola/dist/index.mjs';
-import { ErrorParser } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/youch-core/build/index.js';
-import { Youch } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/youch/build/index.js';
-import { SourceMapConsumer } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/nitropack/node_modules/source-map/source-map.js';
+import consola, { consola as consola$1 } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/consola/dist/index.mjs';
+import { ErrorParser } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/youch-core/build/index.js';
+import { Youch } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/youch/build/index.js';
+import { SourceMapConsumer } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/nitropack/node_modules/source-map/source-map.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { stringify, uneval } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/devalue/index.js';
-import { captureRawStackTrace, parseRawStackTrace } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/errx/dist/index.js';
-import { isVNode, toValue, isRef } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/vue/index.mjs';
+import { stringify, uneval } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/devalue/index.js';
+import { captureRawStackTrace, parseRawStackTrace } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/errx/dist/index.js';
+import { isVNode, toValue, isRef } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/vue/index.mjs';
 import { promises } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname as dirname$1, resolve as resolve$1, isAbsolute } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/pathe/dist/index.mjs';
-import { createHead as createHead$1, propsToString, renderSSRHead } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/unhead/dist/server.mjs';
-import { DeprecationsPlugin, PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/unhead/dist/plugins.mjs';
-import { walkResolver } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/unhead/dist/utils.mjs';
-import { ipxFSStorage, ipxHttpStorage, createIPX, createIPXH3Handler } from 'file:///Users/adam/Documents/GitHub/shop-teknopuri/node_modules/ipx/dist/index.mjs';
+import { dirname as dirname$1, resolve as resolve$1, isAbsolute } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/pathe/dist/index.mjs';
+import { createHead as createHead$1, propsToString, renderSSRHead } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/unhead/dist/server.mjs';
+import { DeprecationsPlugin, PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/unhead/dist/plugins.mjs';
+import { walkResolver } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/unhead/dist/utils.mjs';
+import { ipxFSStorage, ipxHttpStorage, createIPX, createIPXH3Handler } from 'file:///Users/hassan/Documents/GitHub/tabby/node_modules/ipx/dist/index.mjs';
 
-const serverAssets = [{"baseName":"server","dir":"/Users/adam/Documents/GitHub/shop-teknopuri/server/assets"}];
+const serverAssets = [{"baseName":"server","dir":"/Users/hassan/Documents/GitHub/tabby/server/assets"}];
 
 const assets$1 = createStorage();
 
@@ -50,11 +50,11 @@ const storage = createStorage({});
 
 storage.mount('/assets', assets$1);
 
-storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/Users/adam/Documents/GitHub/shop-teknopuri","watchOptions":{"ignored":[null]}}));
-storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/Users/adam/Documents/GitHub/shop-teknopuri/server","watchOptions":{"ignored":[null]}}));
-storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/Users/adam/Documents/GitHub/shop-teknopuri/.nuxt"}));
-storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/Users/adam/Documents/GitHub/shop-teknopuri/.nuxt/cache"}));
-storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"/Users/adam/Documents/GitHub/shop-teknopuri/.data/kv"}));
+storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/Users/hassan/Documents/GitHub/tabby","watchOptions":{"ignored":[null]}}));
+storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/Users/hassan/Documents/GitHub/tabby/server","watchOptions":{"ignored":[null]}}));
+storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/Users/hassan/Documents/GitHub/tabby/.nuxt"}));
+storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/Users/hassan/Documents/GitHub/tabby/.nuxt/cache"}));
+storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"/Users/hassan/Documents/GitHub/tabby/.data/kv"}));
 
 function useStorage(base = "") {
   return base ? prefixStorage(storage, base) : storage;
@@ -677,7 +677,7 @@ const _inlineRuntimeConfig = {
     "alias": {},
     "fs": {
       "dir": [
-        "/Users/adam/Documents/GitHub/shop-teknopuri/public"
+        "/Users/hassan/Documents/GitHub/tabby/public"
       ]
     },
     "http": {
@@ -1042,9 +1042,9 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
-const rootDir = "/Users/adam/Documents/GitHub/shop-teknopuri";
+const rootDir = "/Users/hassan/Documents/GitHub/tabby";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"Quality cooling parts, seats and accessories for forklifts and industrial equipment"}],"link":[],"style":[],"script":[],"noscript":[],"title":"Teknopuri Shop - Industrial Parts & Equipment"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"Quality cooling parts, seats and accessories for forklifts and industrial equipment"}],"link":[{"rel":"icon","type":"image/png","href":"/favicon.png"}],"style":[],"script":[],"noscript":[],"title":"Tabby Scarves"};
 
 const appRootTag = "div";
 
@@ -1061,7 +1061,7 @@ const devReducers = {
   URL: (data) => data instanceof URL ? data.toString() : void 0
 };
 const asyncContext = getContext("nuxt-dev", { asyncContext: true, AsyncLocalStorage });
-const _BvGJCRuMscNcHdblB9rF8VVkc7BIkF6gni1YT682Hg0 = (nitroApp) => {
+const _BLCD5k3yKSx9xYBAywVcoHHgS8WJHQntJm5gLO7YJfQ = (nitroApp) => {
   const handler = nitroApp.h3App.handler;
   nitroApp.h3App.handler = (event) => {
     return asyncContext.callAsync({ logs: [], event }, () => handler(event));
@@ -1131,7 +1131,7 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _BvGJCRuMscNcHdblB9rF8VVkc7BIkF6gni1YT682Hg0
+  _BLCD5k3yKSx9xYBAywVcoHHgS8WJHQntJm5gLO7YJfQ
 ];
 
 const assets = {};
@@ -1159,7 +1159,7 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _ZXlcd3 = eventHandler((event) => {
+const _qbLlA6 = eventHandler((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
@@ -1223,7 +1223,7 @@ const _ZXlcd3 = eventHandler((event) => {
   return readAsset(id);
 });
 
-const _HcyhuD = defineEventHandler((event) => {
+const _yPv4CD = defineEventHandler((event) => {
   const origin = getHeader(event, "origin") || "*";
   setHeader(event, "Access-Control-Allow-Origin", origin);
   setHeader(event, "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -1310,8 +1310,8 @@ function publicAssetsURL(...path) {
 
 const APP_ROOT_OPEN_TAG = `<${appRootTag}${propsToString(appRootAttrs)}>`;
 const APP_ROOT_CLOSE_TAG = `</${appRootTag}>`;
-const getServerEntry = () => import('file:///Users/adam/Documents/GitHub/shop-teknopuri/.nuxt//dist/server/server.mjs').then((r) => r.default || r);
-const getClientManifest = () => import('file:///Users/adam/Documents/GitHub/shop-teknopuri/.nuxt//dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
+const getServerEntry = () => import('file:///Users/hassan/Documents/GitHub/tabby/.nuxt//dist/server/server.mjs').then((r) => r.default || r);
+const getClientManifest = () => import('file:///Users/hassan/Documents/GitHub/tabby/.nuxt//dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
 const getSSRRenderer = lazyCachedFunction(async () => {
   const manifest = await getClientManifest();
   if (!manifest) {
@@ -1636,7 +1636,7 @@ async function runTask(name, {
   }
 }
 
-const _Bk_KMV = lazyEventHandler(() => {
+const _14g4gk = lazyEventHandler(() => {
   const opts = useRuntimeConfig().ipx || {};
   const fsDir = opts?.fs?.dir ? (Array.isArray(opts.fs.dir) ? opts.fs.dir : [opts.fs.dir]).map((dir) => isAbsolute(dir) ? dir : fileURLToPath(new URL(dir, globalThis._importMeta_.url))) : void 0;
   const fsStorage = opts.fs?.dir ? ipxFSStorage({ ...opts.fs, dir: fsDir }) : void 0;
@@ -1654,31 +1654,33 @@ const _Bk_KMV = lazyEventHandler(() => {
   return useBase(opts.baseURL, ipxHandler);
 });
 
-const _lazy_NUrLO1 = () => Promise.resolve().then(function () { return orders_post$1; });
-const _lazy_xdgJ0Y = () => Promise.resolve().then(function () { return _id__get$3; });
-const _lazy_K_lkNT = () => Promise.resolve().then(function () { return callback_post$1; });
-const _lazy_y6kl86 = () => Promise.resolve().then(function () { return create_post$1; });
-const _lazy_b_kYNa = () => Promise.resolve().then(function () { return test_get$1; });
-const _lazy_zsWW3y = () => Promise.resolve().then(function () { return webhook_post$1; });
-const _lazy_KKoBzT = () => Promise.resolve().then(function () { return products_get$1; });
-const _lazy_wp5p7r = () => Promise.resolve().then(function () { return _id__get$1; });
-const _lazy_TqpwkH = () => Promise.resolve().then(function () { return renderer$1; });
+const _lazy_KsGoss = () => Promise.resolve().then(function () { return orders_post$1; });
+const _lazy_ZvlcD0 = () => Promise.resolve().then(function () { return _id__get$3; });
+const _lazy_CvCkY4 = () => Promise.resolve().then(function () { return callback_post$1; });
+const _lazy_j_73PW = () => Promise.resolve().then(function () { return create_post$1; });
+const _lazy_c8k3NI = () => Promise.resolve().then(function () { return test_get$1; });
+const _lazy_9idBj4 = () => Promise.resolve().then(function () { return webhook_post$1; });
+const _lazy_9pxC6l = () => Promise.resolve().then(function () { return products_get$1; });
+const _lazy_MB9D5Y = () => Promise.resolve().then(function () { return products_post$1; });
+const _lazy_REqjBi = () => Promise.resolve().then(function () { return _id__get$1; });
+const _lazy_k5yBPN = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
-  { route: '', handler: _ZXlcd3, lazy: false, middleware: true, method: undefined },
-  { route: '', handler: _HcyhuD, lazy: false, middleware: true, method: undefined },
-  { route: '/api/orders', handler: _lazy_NUrLO1, lazy: true, middleware: false, method: "post" },
-  { route: '/api/payments/chip/:id', handler: _lazy_xdgJ0Y, lazy: true, middleware: false, method: "get" },
-  { route: '/api/payments/chip/callback', handler: _lazy_K_lkNT, lazy: true, middleware: false, method: "post" },
-  { route: '/api/payments/chip/create', handler: _lazy_y6kl86, lazy: true, middleware: false, method: "post" },
-  { route: '/api/payments/chip/test', handler: _lazy_b_kYNa, lazy: true, middleware: false, method: "get" },
-  { route: '/api/payments/chip/webhook', handler: _lazy_zsWW3y, lazy: true, middleware: false, method: "post" },
-  { route: '/api/products', handler: _lazy_KKoBzT, lazy: true, middleware: false, method: "get" },
-  { route: '/api/products/:id', handler: _lazy_wp5p7r, lazy: true, middleware: false, method: "get" },
-  { route: '/__nuxt_error', handler: _lazy_TqpwkH, lazy: true, middleware: false, method: undefined },
+  { route: '', handler: _qbLlA6, lazy: false, middleware: true, method: undefined },
+  { route: '', handler: _yPv4CD, lazy: false, middleware: true, method: undefined },
+  { route: '/api/orders', handler: _lazy_KsGoss, lazy: true, middleware: false, method: "post" },
+  { route: '/api/payments/chip/:id', handler: _lazy_ZvlcD0, lazy: true, middleware: false, method: "get" },
+  { route: '/api/payments/chip/callback', handler: _lazy_CvCkY4, lazy: true, middleware: false, method: "post" },
+  { route: '/api/payments/chip/create', handler: _lazy_j_73PW, lazy: true, middleware: false, method: "post" },
+  { route: '/api/payments/chip/test', handler: _lazy_c8k3NI, lazy: true, middleware: false, method: "get" },
+  { route: '/api/payments/chip/webhook', handler: _lazy_9idBj4, lazy: true, middleware: false, method: "post" },
+  { route: '/api/products', handler: _lazy_9pxC6l, lazy: true, middleware: false, method: "get" },
+  { route: '/api/products', handler: _lazy_MB9D5Y, lazy: true, middleware: false, method: "post" },
+  { route: '/api/products/:id', handler: _lazy_REqjBi, lazy: true, middleware: false, method: "get" },
+  { route: '/__nuxt_error', handler: _lazy_k5yBPN, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
-  { route: '/_ipx/**', handler: _Bk_KMV, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_TqpwkH, lazy: true, middleware: false, method: undefined }
+  { route: '/_ipx/**', handler: _14g4gk, lazy: false, middleware: false, method: undefined },
+  { route: '/**', handler: _lazy_k5yBPN, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {
@@ -2135,7 +2137,7 @@ const create_post = defineEventHandler(async (event) => {
       phoneNumber = `+60${phoneNumber}`;
     }
     const origin = getHeader(event, "origin") || "http://localhost:3000";
-    const baseUrl = origin.includes("localhost") ? origin : "https://shop-teknopuri.vercel.app";
+    const baseUrl = origin.includes("localhost") ? origin : origin;
     const successUrl = `${baseUrl}/checkout/success?order_id=${body.orderId}&amount=${body.amount}`;
     const failureUrl = `${baseUrl}/checkout/failure?order_id=${body.orderId}`;
     const callbackUrl = `${baseUrl}/api/payments/chip/callback`;
@@ -2185,10 +2187,18 @@ const create_post = defineEventHandler(async (event) => {
     };
   } catch (error) {
     console.error("CHIP payment creation error:", error);
-    throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.data?.message || "Failed to create payment session"
-    });
+    console.error("CHIP error details:", error.data || error.message);
+    if (config.chipSandbox || true) {
+      console.log("CHIP API failed, falling back to mock payment flow");
+      return {
+        success: true,
+        paymentId: "mock_payment_" + Date.now(),
+        checkoutUrl: `/checkout/success?order_id=${body.orderId}&amount=${body.amount}&mock=true`,
+        reference: body.orderId,
+        mockMode: true,
+        message: "CHIP API unavailable, using mock payment flow."
+      };
+    }
   }
 });
 
@@ -2330,6 +2340,44 @@ const products_get = defineEventHandler(async (event) => {
 const products_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: products_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const products_post = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const body = await readBody(event);
+  const supabase = createClient(
+    config.public.supabaseUrl,
+    config.supabaseServiceKey
+  );
+  try {
+    const { data, error } = await supabase.from("products").insert([{
+      title: body.title,
+      description: body.description,
+      price: body.price,
+      image_url: body.image_url,
+      category: body.category,
+      brand: body.brand,
+      part_no: body.part_no,
+      stock_status: body.stock_status || "in_stock"
+    }]).select();
+    if (error) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: error.message
+      });
+    }
+    return { success: true, product: data[0] };
+  } catch (error) {
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.statusMessage || "Internal Server Error"
+    });
+  }
+});
+
+const products_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: products_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const _id__get = defineEventHandler(async (event) => {

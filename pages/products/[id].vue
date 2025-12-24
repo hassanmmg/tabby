@@ -14,7 +14,7 @@
           <div class="grid grid-cols-2 gap-0.5">
             <!-- Top Left - Large image with NEW badge -->
             <div class="relative aspect-[3/4] bg-cream-100">
-              <span class="absolute top-4 left-4 bg-burgundy-900 text-white text-xs px-3 py-1 z-10">NEW</span>
+              <span class="absolute top-4 left-4 bg-[#ea580c] text-white text-xs px-3 py-1 z-10">NEW</span>
               <img
                 :src="thumbnails[0]"
                 :alt="product.title"
@@ -48,11 +48,11 @@
         <!-- Right Column: Product Info -->
         <div class="lg:w-[40%] px-6 lg:px-10 py-8 lg:py-6">
           <!-- Product Title -->
-          <h1 class="font-heading text-2xl lg:text-3xl text-burgundy-900 mb-4">{{ productName }}</h1>
+          <h1 class="font-heading text-2xl lg:text-3xl text-black mb-4">{{ productName }}</h1>
 
           <!-- Price -->
           <div class="mb-6">
-            <p class="text-lg font-medium text-burgundy-900">MYR {{ Number(product.price || 0).toFixed(2) }}</p>
+            <p class="text-lg font-medium text-cream-600">MYR {{ Number(product.price || 0).toFixed(2) }}</p>
           </div>
 
           <!-- Color/Variant Selector -->
@@ -66,7 +66,7 @@
               >
                 <div
                   class="w-24 h-28 border-2 rounded overflow-hidden mb-2 transition-all"
-                  :class="selectedVariant?.id === variant.id ? 'border-burgundy-900' : 'border-cream-200 hover:border-cream-400'"
+                  :class="selectedVariant?.id === variant.id ? 'border-[#ea580c]' : 'border-cream-200 hover:border-cream-400'"
                 >
                   <img :src="variant.thumbnail" :alt="variant.name" class="w-full h-full object-cover" />
                 </div>
@@ -80,7 +80,7 @@
           <div class="border-t border-cream-200 pt-6">
             <!-- Quantity -->
             <div class="flex items-center gap-4 mb-4">
-              <span class="text-sm font-medium text-burgundy-900">Quantity:</span>
+              <span class="text-sm font-medium text-black">Quantity:</span>
               <div class="flex items-center border border-cream-300 rounded">
                 <button @click="decrementQuantity" class="w-10 h-10 flex items-center justify-center hover:bg-cream-50 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,13 +105,13 @@
             <div class="space-y-3">
               <button
                 @click="addToCart"
-                class="w-full bg-burgundy-900 text-white py-3.5 hover:bg-burgundy-800 font-medium tracking-wide transition-colors rounded"
+                class="w-full bg-[#ea580c] text-white py-3.5 hover:bg-[#c2410c] font-medium tracking-wide transition-colors rounded"
               >
                 Add to Cart
               </button>
               <button
                 @click="buyNow"
-                class="w-full border border-burgundy-900 text-burgundy-900 py-3.5 hover:bg-burgundy-50 font-medium tracking-wide transition-colors rounded"
+                class="w-full border border-[#ea580c] text-[#ea580c] py-3.5 hover:bg-orange-50 font-medium tracking-wide transition-colors rounded"
               >
                 Buy Now
               </button>
@@ -124,7 +124,7 @@
               @click="descriptionOpen = !descriptionOpen"
               class="w-full py-4 flex items-center justify-between text-left"
             >
-              <span class="font-medium text-burgundy-900">Description</span>
+              <span class="font-medium text-black">Description</span>
               <svg
                 class="w-5 h-5 text-cream-600 transition-transform duration-200"
                 :class="descriptionOpen ? 'rotate-180' : ''"
@@ -138,11 +138,11 @@
             <div v-show="descriptionOpen" class="pb-6 text-cream-700 text-sm leading-relaxed">
               <p class="mb-4">{{ product.description || `Meet ${productName}, your new everyday favourite! A basic staple, ${productName} is made from comfy poly voile, giving you precise styling and airy breathable comfort all day long.` }}</p>
               <ul class="space-y-2">
-                <li><span class="font-medium text-burgundy-900">Material</span>: Poly Voile.</li>
-                <li><span class="font-medium text-burgundy-900">Finishing</span>: Baby Seam.</li>
-                <li><span class="font-medium text-burgundy-900">Label</span>: Metal Tag.</li>
-                <li><span class="font-medium text-burgundy-900">Shape</span>: Square.</li>
-                <li><span class="font-medium text-burgundy-900">Measurement</span>: 1.15m x 1.15m (45" x 45").</li>
+                <li><span class="font-medium text-black">Material</span>: Poly Voile.</li>
+                <li><span class="font-medium text-black">Finishing</span>: Baby Seam.</li>
+                <li><span class="font-medium text-black">Label</span>: Metal Tag.</li>
+                <li><span class="font-medium text-black">Shape</span>: Square.</li>
+                <li><span class="font-medium text-black">Measurement</span>: 1.15m x 1.15m (45" x 45").</li>
               </ul>
             </div>
           </div>
@@ -151,7 +151,7 @@
 
       <!-- Related Products -->
       <div v-if="product && relatedProducts.length > 0" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 class="font-heading text-2xl md:text-3xl mb-8 text-burgundy-900 text-center">You May Also Like</h2>
+        <h2 class="font-heading text-2xl md:text-3xl mb-8 text-black text-center">You May Also Like</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <NuxtLink
             v-for="relatedProduct in relatedProducts"
@@ -167,7 +167,7 @@
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <h3 class="text-sm font-medium text-burgundy-900 mb-1">{{ relatedProduct.title }}</h3>
+            <h3 class="text-sm font-medium text-black mb-1">{{ relatedProduct.title }}</h3>
             <p class="text-sm text-cream-700">MYR {{ Number(relatedProduct.price || 0).toFixed(2) }}</p>
           </NuxtLink>
         </div>
@@ -207,8 +207,8 @@ const collections = ['Nara', 'Inaya', 'Nluxe', 'Muna', 'Ilya', 'Wayfarer']
 const variants = ref([
   { id: 1, name: 'Coolmint', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-c.jpg?v=1765855143&width=1000'] },
   { id: 2, name: 'Snow', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-a.jpg?v=1765855990&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-a.jpg?v=1765855990&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-b.jpg?v=1765855990&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-c.jpg?v=1765855990&width=1000'] },
-  { id: 3, name: 'Sunkissed', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Sunkissed-SQ-a.jpg?v=1765855246&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Sunkissed-SQ-a.jpg?v=1765855246&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Sunkissed-SQ-b.jpg?v=1765855246&width=1000'] },
-  { id: 4, name: 'Apricot', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Apricot-SQ-a.jpg?v=1765855898&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Apricot-SQ-a.jpg?v=1765855898&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Apricot-SQ-b.jpg?v=1765855898&width=1000'] },
+  { id: 3, name: 'Rosy', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-a.jpg?v=1765855405&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-a.jpg?v=1765855405&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-b.jpg?v=1765855405&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-c.jpg?v=1765855405&width=1000'] },
+  { id: 4, name: 'Onyx', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-a.jpg?v=1765854942&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-a.jpg?v=1765854942&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-b.jpg?v=1765854942&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-c.jpg?v=1765854942&width=1000'] },
 ])
 
 // Thumbnails for the gallery - changes based on selected variant
@@ -218,8 +218,8 @@ const thumbnails = computed(() => {
   }
   // Default Coolmint images
   return [
-    'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=600',
-    'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=600',
+    'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=1000',
+    'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000',
     'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-c.jpg?v=1765855143&width=1000',
   ]
 })
@@ -235,10 +235,9 @@ const mockProducts = [
   {
     id: 1,
     title: 'Nara Coolmint',
-    description: 'Meet Nara, your new everyday favourite! A basic staple, Nara is made from comfy poly voile, giving you precise styling and airy breathable comfort all day long.',
+    description: 'Premium quality fabric with elegant design',
     price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=1440',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000',
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000',
     category: 'Scarves',
     brand: 'Tabby',
     part_no: 'MINT-001',
@@ -249,8 +248,7 @@ const mockProducts = [
     title: 'Nara Smokey',
     description: 'Elegant signature collection piece',
     price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Signatures-Nara-03.jpg?v=1765853724&width=1440',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Smokey-SQ-b.jpg?v=1765854993&width=1000',
+    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Smokey-SQ-b.jpg?v=1765854993&width=1000',
     category: 'Scarves',
     brand: 'Tabby',
     part_no: 'SMOKE-001',
@@ -262,7 +260,6 @@ const mockProducts = [
     description: 'Luxurious silk fabric for everyday elegance',
     price: 69.00,
     image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-a.jpg?v=1765855990&width=1000',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-b.jpg?v=1765855990&width=1000',
     category: 'Premium',
     brand: 'Tabby',
     part_no: 'SNOW-001',
@@ -274,7 +271,6 @@ const mockProducts = [
     description: 'Comfortable and stylish for daily wear',
     price: 69.00,
     image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-a.jpg?v=1765855405&width=1000',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-b.jpg?v=1765855405&width=1000',
     category: 'Basics',
     brand: 'Tabby',
     part_no: 'ROSY-001',
@@ -286,7 +282,6 @@ const mockProducts = [
     description: 'Light and airy for warm weather',
     price: 69.00,
     image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Ube-SQ-a.jpg?v=1765855299&width=1000',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Ube-SQ-b.jpg?v=1765855299&width=1000',
     category: 'Seasonal',
     brand: 'Tabby',
     part_no: 'UBE-001',
@@ -298,7 +293,6 @@ const mockProducts = [
     description: 'Beautiful cosmic inspired design',
     price: 69.00,
     image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Cosmos-SQ-a.jpg?v=1765854958&width=996',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Cosmos-SQ-b.jpg?v=1765854958&width=996',
     category: 'Premium',
     brand: 'Tabby',
     part_no: 'COSM-001',
@@ -310,7 +304,6 @@ const mockProducts = [
     description: 'Elegant dark sophistication',
     price: 69.00,
     image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-a.jpg?v=1765854942&width=1000',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-b.jpg?v=1765854942&width=1000',
     category: 'Premium',
     brand: 'Tabby',
     part_no: 'ONYX-001',
@@ -322,7 +315,6 @@ const mockProducts = [
     description: 'Warm earthy tones for everyday style',
     price: 69.00,
     image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Granola-SQ-b.jpg?v=1765855045&width=998',
-    image_url_2: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Granola-SQ-a.jpg?v=1765855045&width=998',
     category: 'Basics',
     brand: 'Tabby',
     part_no: 'GRAN-001',
@@ -388,39 +380,20 @@ const buyNow = () => {
 onMounted(async () => {
   const productId = parseInt(route.params.id)
 
-  try {
-    const data = await $fetch(`/api/products/${route.params.id}`)
-    product.value = data
+  // Use local mock products with local images
+  product.value = mockProducts.find(p => p.id === productId) || null
 
-    if (data.category) {
-      const related = await $fetch('/api/products', {
-        params: {
-          category: data.category,
-          limit: 5
-        }
-      })
+  if (product.value) {
+    // Get related products from mock data
+    relatedProducts.value = mockProducts
+      .filter(p => p.id !== productId)
+      .slice(0, 4)
+  }
 
-      if (related) {
-        relatedProducts.value = related.filter(p => p.id !== data.id).slice(0, 4)
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching product, using mock data:', error)
-    // Use mock products as fallback
-    product.value = mockProducts.find(p => p.id === productId) || null
-
-    if (product.value) {
-      // Get related products from mock data
-      relatedProducts.value = mockProducts
-        .filter(p => p.id !== productId)
-        .slice(0, 4)
-    }
-  } finally {
-    loading.value = false
-    // Select first variant by default
-    if (variants.value.length > 0) {
-      selectedVariant.value = variants.value[0]
-    }
+  loading.value = false
+  // Select first variant by default
+  if (variants.value.length > 0) {
+    selectedVariant.value = variants.value[0]
   }
 })
 </script>

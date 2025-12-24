@@ -7,12 +7,12 @@
     "module": true,
     "resourceType": "script"
   },
-  "/Users/adam/Documents/GitHub/shop-teknopuri/node_modules/nuxt/dist/app/entry.js": {
+  "/Users/hassan/Documents/GitHub/tabby/node_modules/nuxt/dist/app/entry.js": {
     "resourceType": "script",
     "module": true,
     "prefetch": true,
     "preload": true,
     "isEntry": true,
-    "file": "/Users/adam/Documents/GitHub/shop-teknopuri/node_modules/nuxt/dist/app/entry.js"
+    "file": "/Users/hassan/Documents/GitHub/tabby/node_modules/nuxt/dist/app/entry.js"
   }
 }

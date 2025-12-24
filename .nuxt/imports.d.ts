@@ -30,13 +30,6 @@ export { requestIdleCallback, cancelIdleCallback } from '#app/compat/idle-callba
 export { setInterval } from '#app/compat/interval';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
-export { useApi } from '../composables/api';
-export { useAuth } from '../composables/auth';
-export { useBreakpoint } from '../composables/breakpoint';
-export { useDropzone } from '../composables/dropzone';
-export { useRole } from '../composables/role';
-export { useCustomerService } from '../composables/useCustomerService';
-export { useSupabase } from '../composables/useSupabase';
 export { useCartStore } from '../stores/cart';
 export { useSupabaseClient } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseClient';
 export { useSupabaseCookieRedirect } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseCookieRedirect';

@@ -13,15 +13,8 @@
         </NuxtLink>
 
         
-        <!-- Right side - Search and Cart -->
+        <!-- Right side - Cart -->
         <div class="flex items-center gap-5">
-          <!-- Search Icon -->
-          <button class="p-1 hover:opacity-70 transition-opacity hidden sm:block">
-            <svg :class="['w-5 h-5', iconClass]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </button>
-
           <!-- Cart Icon -->
           <button
             @click="cartStore.toggleCart()"
@@ -34,7 +27,7 @@
               v-if="cartStore.itemCount > 0"
               :class="[
                 'absolute -top-1 -right-1 h-4 w-4 text-[9px] flex items-center justify-center font-medium rounded-full',
-                isScrolled || variant === 'solid' ? 'bg-burgundy-900 text-white' : 'bg-white text-burgundy-900'
+                isScrolled || variant === 'solid' ? 'bg-[#ea580c] text-white' : 'bg-white text-[#ea580c]'
               ]"
             >
               {{ cartStore.itemCount }}
@@ -58,7 +51,7 @@ const isScrolled = ref(false)
 
 const navClass = computed(() => {
   if (props.variant === 'solid') {
-    return 'sticky top-0 bg-burgundy-900'
+    return 'sticky top-0 bg-white border-b border-cream-300 shadow-sm'
   }
   // Transparent variant
   if (isScrolled.value) {
@@ -68,18 +61,18 @@ const navClass = computed(() => {
 })
 
 const textClass = computed(() => {
-  if (props.variant === 'solid') return 'text-white'
-  return isScrolled.value ? 'text-burgundy-900' : 'text-white'
+  if (props.variant === 'solid') return 'text-black'
+  return isScrolled.value ? 'text-black' : 'text-white'
 })
 
 const linkClass = computed(() => {
-  if (props.variant === 'solid') return 'text-white/90 hover:text-white'
-  return isScrolled.value ? 'text-burgundy-900/80 hover:text-burgundy-900' : 'text-white/90 hover:text-white'
+  if (props.variant === 'solid') return 'text-black/80 hover:text-black'
+  return isScrolled.value ? 'text-black/80 hover:text-black' : 'text-white/90 hover:text-white'
 })
 
 const iconClass = computed(() => {
-  if (props.variant === 'solid') return 'text-white'
-  return isScrolled.value ? 'text-burgundy-900' : 'text-white'
+  if (props.variant === 'solid') return 'text-black'
+  return isScrolled.value ? 'text-black' : 'text-white'
 })
 
 const handleScroll = () => {
