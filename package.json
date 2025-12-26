@@ -2,6 +2,9 @@
   "name": "tabby",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxi dev --no-fork",
