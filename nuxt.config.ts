@@ -18,10 +18,6 @@ export default defineNuxtConfig({
       options: {
         target: 'esnext'
       }
-    },
-    cors: {
-      origin: '*',
-      credentials: true
     }
   },
   vite: {
@@ -36,8 +32,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
-    '@nuxt/image',
-    '@nuxtjs/supabase'
+    '@nuxt/image'
   ],
   css: ['~/assets/css/main.css'],
   app: {
@@ -53,28 +48,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  runtimeConfig: {
-    // Private keys (server-side only)
-    chipBrandId: process.env.CHIP_BRAND_ID || '',
-    chipApiKey: process.env.CHIP_API_KEY || '',
-    chipSandbox: process.env.CHIP_SANDBOX === 'true',
-    supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY || '',
-    // Public keys (available client-side)
-    public: {
-      apiBase: '/api',
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_KEY,
-      supabase: {
-        url: process.env.SUPABASE_URL,
-        key: process.env.SUPABASE_KEY
-      }
-    }
-  },
-  supabase: {
-    redirect: false
-  },
   image: {
     dir: 'public'
   }
 })
-  

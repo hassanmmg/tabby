@@ -13,11 +13,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "@nuxtjs/supabase": "^1.6.1",
-    "@stripe/stripe-js": "^7.9.0",
-    "@supabase/supabase-js": "^2.57.0",
     "nuxt": "^3.19.1",
-    "stripe": "^18.5.0",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
