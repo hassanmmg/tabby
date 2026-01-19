@@ -12,9 +12,18 @@
           Tabby
         </NuxtLink>
 
-        
-        <!-- Right side - Cart -->
+
+        <!-- Right side - Admin Link & Cart -->
         <div class="flex items-center gap-5">
+          <!-- Admin Link (only visible to admin users) -->
+          <NuxtLink
+            v-if="authStore.isAdmin"
+            to="/admin"
+            :class="['text-sm font-medium transition-colors', linkClass]"
+          >
+            Admin
+          </NuxtLink>
+
           <!-- Cart Icon -->
           <button
             @click="cartStore.toggleCart()"
@@ -41,13 +50,23 @@
 
 <script setup lang="ts">
 import { useCartStore } from '~/stores/cart'
+import { useAuthStore } from '~/stores/auth'
 
 const props = defineProps<{
   variant?: 'transparent' | 'solid'
 }>()
 
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 const isScrolled = ref(false)
+
+// Initialize auth and cart on mount
+onMounted(() => {
+  authStore.initAuth()
+  cartStore.loadFromLocalStorage()
+  window.addEventListener('scroll', handleScroll)
+  handleScroll()
+})
 
 const navClass = computed(() => {
   if (props.variant === 'solid') {
@@ -78,11 +97,6 @@ const iconClass = computed(() => {
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50
 }
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  handleScroll()
-})
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)

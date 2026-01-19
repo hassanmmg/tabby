@@ -12,13 +12,9 @@
             <div class="bg-white border border-cream-300 shadow-luxury p-5 sm:p-6">
               <h2 class="font-heading text-lg sm:text-xl text-black mb-5">Customer Information</h2>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">First Name</label>
-                  <input v-model="customerInfo.firstName" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-[#ea580c] focus:ring-1 focus:ring-burgundy-900 transition-colors">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Last Name</label>
-                  <input v-model="customerInfo.lastName" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-[#ea580c] focus:ring-1 focus:ring-burgundy-900 transition-colors">
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Full Name</label>
+                  <input v-model="customerInfo.fullName" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-[#ea580c] focus:ring-1 focus:ring-burgundy-900 transition-colors">
                 </div>
                 <div class="md:col-span-2">
                   <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Email</label>
@@ -49,32 +45,28 @@
                     <input v-model="shippingAddress.state" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-[#ea580c] focus:ring-1 focus:ring-burgundy-900 transition-colors">
                   </div>
                   <div>
-                    <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">ZIP Code</label>
-                    <input v-model="shippingAddress.zipCode" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-[#ea580c] focus:ring-1 focus:ring-burgundy-900 transition-colors">
+                    <label class="block text-sm font-medium mb-2 text-cream-800 uppercase tracking-wider">Postal Code</label>
+                    <input v-model="shippingAddress.postalCode" type="text" class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-[#ea580c] focus:ring-1 focus:ring-burgundy-900 transition-colors">
                   </div>
                 </div>
               </div>
+            </div>
+
+            <!-- Order Notes -->
+            <div class="bg-white border border-cream-300 shadow-luxury p-5 sm:p-6">
+              <h2 class="font-heading text-lg sm:text-xl text-black mb-5">Order Notes (Optional)</h2>
+              <textarea
+                v-model="orderNotes"
+                rows="3"
+                placeholder="Any special instructions for your order..."
+                class="w-full border border-cream-400 px-4 py-3 bg-cream-50 focus:outline-none focus:border-[#ea580c] focus:ring-1 focus:ring-burgundy-900 transition-colors"
+              ></textarea>
             </div>
 
             <!-- Payment Method -->
             <div class="bg-white border border-cream-300 shadow-luxury p-5 sm:p-6">
               <h2 class="font-heading text-lg sm:text-xl text-black mb-5">Payment Method</h2>
               <div class="space-y-3">
-                <label class="flex items-center p-4 border cursor-pointer transition-all duration-200"
-                  :class="paymentMethod === 'chip' ? 'border-[#ea580c] bg-orange-50' : 'border-cream-400 hover:border-orange-400'">
-                  <input
-                    type="radio"
-                    v-model="paymentMethod"
-                    value="chip"
-                    class="mr-4 accent-[#ea580c]"
-                    :disabled="processing"
-                  >
-                  <div>
-                    <p class="font-medium text-black">CHIP Payment Gateway</p>
-                    <p class="text-xs text-cream-600 mt-0.5">Pay securely with credit/debit card, online banking, or e-wallets</p>
-                  </div>
-                </label>
-
                 <label class="flex items-center p-4 border cursor-pointer transition-all duration-200"
                   :class="paymentMethod === 'bank_transfer' ? 'border-[#ea580c] bg-orange-50' : 'border-cream-400 hover:border-orange-400'">
                   <input
@@ -86,10 +78,9 @@
                   >
                   <div>
                     <p class="font-medium text-black">Bank Transfer</p>
-                    <p class="text-xs text-cream-600 mt-0.5">Pay via manual bank transfer</p>
+                    <p class="text-xs text-cream-600 mt-0.5">Pay via manual bank transfer - we'll send you the details</p>
                   </div>
                 </label>
-
               </div>
             </div>
           </div>
@@ -142,6 +133,14 @@
                 <p class="text-sm text-red-700">{{ errorMessage }}</p>
               </div>
 
+              <!-- Validation Errors -->
+              <div v-if="validationErrors.length > 0 && !isFormValid" class="mt-4 p-4 border border-orange-300 bg-orange-50">
+                <p class="text-sm font-medium text-orange-800 mb-2">Please complete the following:</p>
+                <ul class="text-sm text-orange-700 list-disc list-inside space-y-1">
+                  <li v-for="error in validationErrors" :key="error">{{ error }}</li>
+                </ul>
+              </div>
+
               <button
                 @click="placeOrder"
                 :disabled="!isFormValid || processing"
@@ -161,13 +160,41 @@
 
 <script setup>
 import { useCartStore } from '@/stores/cart'
+import { useAuthStore } from '@/stores/auth'
 
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 const router = useRouter()
 
+// Track if cart is loaded
+const cartLoaded = ref(false)
+
+// Load cart from localStorage and redirect if empty
+onMounted(async () => {
+  // Ensure we're on client side
+  if (process.client) {
+    // Load cart from localStorage
+    cartStore.loadFromLocalStorage()
+    authStore.initAuth()
+
+    // Mark cart as loaded
+    cartLoaded.value = true
+
+    // Debug: log cart state
+    console.log('Cart loaded, items:', cartStore.items.length, cartStore.items)
+
+    // Wait a tick then check if cart is empty
+    await nextTick()
+
+    if (cartStore.items.length === 0) {
+      console.log('Cart is empty, redirecting to home')
+      router.push('/')
+    }
+  }
+})
+
 const customerInfo = ref({
-  firstName: '',
-  lastName: '',
+  fullName: '',
   email: '',
   phone: ''
 })
@@ -176,10 +203,11 @@ const shippingAddress = ref({
   street: '',
   city: '',
   state: '',
-  zipCode: ''
+  postalCode: ''
 })
 
-const paymentMethod = ref('chip')
+const orderNotes = ref('')
+const paymentMethod = ref('bank_transfer')
 const processing = ref(false)
 const errorMessage = ref('')
 
@@ -189,78 +217,196 @@ const shipping = computed(() => subtotal.value > 500 ? 0 : 25)
 const total = computed(() => subtotal.value + shipping.value)
 
 const isFormValid = computed(() => {
-  return customerInfo.value.firstName &&
-         customerInfo.value.lastName &&
+  return customerInfo.value.fullName &&
          customerInfo.value.email &&
          customerInfo.value.phone &&
          shippingAddress.value.street &&
          shippingAddress.value.city &&
          shippingAddress.value.state &&
-         shippingAddress.value.zipCode &&
-         paymentMethod.value
+         shippingAddress.value.postalCode &&
+         paymentMethod.value &&
+         cartItems.value.length > 0
 })
+
+const validationErrors = computed(() => {
+  const errors = []
+  if (cartItems.value.length === 0) errors.push('Your cart is empty')
+  if (!customerInfo.value.fullName) errors.push('Full name is required')
+  if (!customerInfo.value.email) errors.push('Email is required')
+  if (!customerInfo.value.phone) errors.push('Phone is required')
+  if (!shippingAddress.value.street) errors.push('Street address is required')
+  if (!shippingAddress.value.city) errors.push('City is required')
+  if (!shippingAddress.value.state) errors.push('State is required')
+  if (!shippingAddress.value.postalCode) errors.push('Postal code is required')
+  return errors
+})
+
+// Get or create a guest ID for cart operations (simple numeric format)
+const getGuestId = () => {
+  if (process.client) {
+    let guestId = localStorage.getItem('guest_id')
+    if (!guestId) {
+      // Use simple numeric ID
+      guestId = String(Date.now())
+      localStorage.setItem('guest_id', guestId)
+    }
+    return guestId
+  }
+  return String(Date.now())
+}
 
 const placeOrder = async () => {
   if (!isFormValid.value) return
 
+  // Check cart is not empty
+  if (cartItems.value.length === 0) {
+    errorMessage.value = 'Your cart is empty. Please add items before checkout.'
+    return
+  }
+
   errorMessage.value = ''
   processing.value = true
 
-  try {
-    const orderNumber = 'ORD-' + Date.now()
+  const API_BASE = 'https://tabbyscarvesapiv2.woofalert.com'
 
-    const orderData = {
-      orderNumber: orderNumber,
-      customerName: `${customerInfo.value.firstName} ${customerInfo.value.lastName}`,
-      customerEmail: customerInfo.value.email,
-      customerPhone: customerInfo.value.phone,
-      shippingAddress: shippingAddress.value,
-      paymentMethod: paymentMethod.value,
-      items: cartItems.value.map(item => ({
-        id: item.id,
-        title: item.title,
-        quantity: item.quantity,
-        price: item.price
-      })),
-      subtotal: subtotal.value,
-      shipping: shipping.value,
-      total: total.value,
-      createdAt: new Date().toISOString()
+  try {
+    // Get guest ID for cart operations
+    const guestId = getGuestId()
+    console.log('Using guest ID:', guestId)
+    console.log('Cart items to add:', cartItems.value)
+
+    // Step 1: Clear the API cart first (ignore errors - cart might not exist)
+    try {
+      await fetch(`${API_BASE}/api/cart/${guestId}/clear`, {
+        method: 'DELETE'
+      })
+    } catch (e) {
+      console.log('Clear cart failed (this is okay):', e)
     }
 
-    if (paymentMethod.value === 'chip') {
-      const paymentResponse = await $fetch('/api/payments/chip/create', {
+    // Step 2: Add each item to the API cart
+    for (const item of cartItems.value) {
+      const productId = parseInt(item.id, 10)
+      const qty = parseInt(String(item.quantity), 10)
+
+      console.log('Adding item to cart:', { product_id: productId, quantity: qty })
+
+      const addResponse = await fetch(`${API_BASE}/api/cart/${guestId}/items`, {
         method: 'POST',
-        body: {
-          orderId: orderNumber,
-          amount: total.value,
-          customerInfo: {
-            name: orderData.customerName,
-            email: orderData.customerEmail,
-            phone: orderData.customerPhone,
-            firstName: customerInfo.value.firstName,
-            lastName: customerInfo.value.lastName
-          },
-          currency: 'MYR'
-        }
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          product_id: productId,
+          quantity: qty
+        })
       })
 
-      if (paymentResponse.success && paymentResponse.checkoutUrl) {
-        localStorage.setItem('pendingOrder', JSON.stringify(orderData))
-        window.location.href = paymentResponse.checkoutUrl
-        return
-      } else {
-        throw new Error('Failed to create payment session')
+      if (!addResponse.ok) {
+        const errData = await addResponse.json().catch(() => ({}))
+        console.error('Add to cart failed:', errData)
+        throw new Error(errData.detail || `Failed to add item "${item.title}" to cart`)
       }
     }
 
+    // Generate order number
+    const orderNumber = 'ORD-' + Date.now()
+
+    // Create order data for local storage
+    const orderData = {
+      orderId: orderNumber,
+      orderNumber: orderNumber,
+      total: total.value,
+      subtotal: subtotal.value,
+      shipping: shipping.value,
+      customerName: customerInfo.value.fullName,
+      customerEmail: customerInfo.value.email,
+      customerPhone: customerInfo.value.phone,
+      shippingAddress: {
+        street: shippingAddress.value.street,
+        city: shippingAddress.value.city,
+        state: shippingAddress.value.state,
+        postalCode: shippingAddress.value.postalCode
+      },
+      items: cartItems.value.map(item => ({
+        id: item.id,
+        title: item.title,
+        price: item.price,
+        quantity: item.quantity,
+        image_url: item.image_url
+      })),
+      paymentMethod: paymentMethod.value,
+      notes: orderNotes.value || null,
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    }
+
+    // Step 3: Place the order using the guest ID
+    const orderPayload = {
+      email: customerInfo.value.email,
+      phone: customerInfo.value.phone,
+      shipping_address: shippingAddress.value.street,
+      shipping_city: shippingAddress.value.city,
+      shipping_state: shippingAddress.value.state,
+      shipping_postal_code: shippingAddress.value.postalCode,
+      notes: orderNotes.value || null
+    }
+
+    console.log('=== ORDER API REQUEST ===')
+    console.log('URL:', `${API_BASE}/api/orders/${guestId}`)
+    console.log('Payload:', JSON.stringify(orderPayload, null, 2))
+
+    const response = await fetch(`${API_BASE}/api/orders/${guestId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderPayload)
+    })
+
+    console.log('Response status:', response.status)
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      let errorMsg = 'Failed to submit order'
+      if (errorData.detail) {
+        if (typeof errorData.detail === 'string') {
+          errorMsg = errorData.detail
+        } else if (Array.isArray(errorData.detail)) {
+          // Handle validation errors array (e.g., FastAPI format)
+          errorMsg = errorData.detail.map(e => e.msg || e.message || String(e)).join(', ')
+        } else if (typeof errorData.detail === 'object') {
+          errorMsg = errorData.detail.message || errorData.detail.msg || JSON.stringify(errorData.detail)
+        }
+      } else if (errorData.message) {
+        errorMsg = errorData.message
+      } else if (errorData.error) {
+        errorMsg = typeof errorData.error === 'string' ? errorData.error : JSON.stringify(errorData.error)
+      }
+      throw new Error(errorMsg)
+    }
+
+    // Get the created order from response
+    const createdOrder = await response.json()
+    orderData.orderId = createdOrder.id || orderNumber
+
+    // Store order locally for success page
     localStorage.setItem('completedOrder', JSON.stringify(orderData))
+
+    // Also store in order history
+    const orderHistory = JSON.parse(localStorage.getItem('orderHistory') || '[]')
+    orderHistory.push(orderData)
+    localStorage.setItem('orderHistory', JSON.stringify(orderHistory))
+
+    // Clear cart
     cartStore.clearCart()
+
+    // Redirect to success page
     router.push(`/checkout/success?order_id=${orderNumber}`)
 
   } catch (error) {
     console.error('Checkout error:', error)
-    errorMessage.value = error.data?.statusMessage || 'An error occurred while processing your order. Please try again.'
+    errorMessage.value = error.message || 'An error occurred while processing your order. Please try again.'
     window.scrollTo(0, 0)
   } finally {
     processing.value = false

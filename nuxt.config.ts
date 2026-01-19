@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-07-15',
   devtools: { enabled: false },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: 'https://tabbyscarvesapiv2.woofalert.com'
+    }
+  },
   experimental: {
     appManifest: false,
     typescriptBundlerResolution: false

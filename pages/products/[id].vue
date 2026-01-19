@@ -16,28 +16,33 @@
             <div class="relative aspect-[3/4] bg-cream-100">
               <span class="absolute top-4 left-4 bg-[#ea580c] text-white text-xs px-3 py-1 z-10">NEW</span>
               <img
-                :src="thumbnails[0]"
-                :alt="product.title"
+                v-if="product.image_url"
+                :src="product.image_url"
+                :alt="product.name"
                 class="w-full h-full object-cover cursor-pointer"
-                @click="openLightbox(0)"
               />
+              <div v-else class="w-full h-full flex items-center justify-center">
+                <svg class="w-16 h-16 text-cream-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
             </div>
-            <!-- Top Right - Large image -->
+            <!-- Top Right - Second view -->
             <div class="aspect-[3/4] bg-cream-100">
               <img
-                :src="thumbnails[1]"
-                :alt="product.title"
+                v-if="product.image_url"
+                :src="product.image_url"
+                :alt="product.name"
                 class="w-full h-full object-cover cursor-pointer"
-                @click="openLightbox(1)"
               />
             </div>
-            <!-- Bottom Left - Smaller image -->
+            <!-- Bottom Left - Third view -->
             <div class="aspect-[3/4] bg-cream-100">
               <img
-                :src="thumbnails[2]"
-                :alt="product.title"
+                v-if="product.image_url"
+                :src="product.image_url"
+                :alt="product.name"
                 class="w-full h-full object-cover cursor-pointer"
-                @click="openLightbox(2)"
               />
             </div>
             <!-- Bottom Right - Empty cream space -->
@@ -48,34 +53,30 @@
         <!-- Right Column: Product Info -->
         <div class="lg:w-[40%] px-6 lg:px-10 py-8 lg:py-6">
           <!-- Product Title -->
-          <h1 class="font-heading text-2xl lg:text-3xl text-black mb-4">{{ productName }}</h1>
+          <h1 class="font-heading text-2xl lg:text-3xl text-black mb-4">{{ product.name }}</h1>
+
+          <!-- SKU -->
+          <p v-if="product.sku" class="text-sm text-cream-500 mb-2">SKU: {{ product.sku }}</p>
 
           <!-- Price -->
           <div class="mb-6">
             <p class="text-lg font-medium text-cream-600">MYR {{ Number(product.price || 0).toFixed(2) }}</p>
           </div>
 
-          <!-- Color/Variant Selector -->
+          <!-- Stock Status -->
           <div class="mb-6">
-            <div class="flex gap-2 overflow-x-auto pb-2">
-              <button
-                v-for="variant in variants"
-                :key="variant.id"
-                @click="selectVariant(variant)"
-                class="flex-shrink-0 flex flex-col items-center"
-              >
-                <div
-                  class="w-24 h-28 border-2 rounded overflow-hidden mb-2 transition-all"
-                  :class="selectedVariant?.id === variant.id ? 'border-[#ea580c]' : 'border-cream-200 hover:border-cream-400'"
-                >
-                  <img :src="variant.thumbnail" :alt="variant.name" class="w-full h-full object-cover" />
-                </div>
-                <span class="text-xs text-cream-700">{{ variant.name }}</span>
-              </button>
-            </div>
+            <span
+              :class="[
+                'inline-block px-3 py-1 text-sm font-medium rounded',
+                product.stock > 0
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-red-100 text-red-800'
+              ]"
+            >
+              {{ product.stock > 0 ? `In Stock (${product.stock} available)` : 'Out of Stock' }}
+            </span>
           </div>
 
-          
           <!-- Add to Cart Section -->
           <div class="border-t border-cream-200 pt-6">
             <!-- Quantity -->
@@ -91,6 +92,7 @@
                   v-model.number="quantity"
                   type="number"
                   min="1"
+                  :max="product.stock"
                   class="w-12 text-center border-x border-cream-300 py-2 text-sm focus:outline-none"
                 />
                 <button @click="incrementQuantity" class="w-10 h-10 flex items-center justify-center hover:bg-cream-50 transition-colors">
@@ -105,13 +107,15 @@
             <div class="space-y-3">
               <button
                 @click="addToCart"
-                class="w-full bg-[#ea580c] text-white py-3.5 hover:bg-[#c2410c] font-medium tracking-wide transition-colors rounded"
+                :disabled="product.stock <= 0"
+                class="w-full bg-[#ea580c] text-white py-3.5 hover:bg-[#c2410c] font-medium tracking-wide transition-colors rounded disabled:bg-cream-400 disabled:cursor-not-allowed"
               >
                 Add to Cart
               </button>
               <button
                 @click="buyNow"
-                class="w-full border border-[#ea580c] text-[#ea580c] py-3.5 hover:bg-orange-50 font-medium tracking-wide transition-colors rounded"
+                :disabled="product.stock <= 0"
+                class="w-full border border-[#ea580c] text-[#ea580c] py-3.5 hover:bg-orange-50 font-medium tracking-wide transition-colors rounded disabled:border-cream-400 disabled:text-cream-400 disabled:cursor-not-allowed"
               >
                 Buy Now
               </button>
@@ -136,7 +140,7 @@
               </svg>
             </button>
             <div v-show="descriptionOpen" class="pb-6 text-cream-700 text-sm leading-relaxed">
-              <p class="mb-4">{{ product.description || `Meet ${productName}, your new everyday favourite! A basic staple, ${productName} is made from comfy poly voile, giving you precise styling and airy breathable comfort all day long.` }}</p>
+              <p class="mb-4">{{ product.description || `Meet ${product.name}, your new everyday favourite! A basic staple made from comfy poly voile, giving you precise styling and airy breathable comfort all day long.` }}</p>
               <ul class="space-y-2">
                 <li><span class="font-medium text-black">Material</span>: Poly Voile.</li>
                 <li><span class="font-medium text-black">Finishing</span>: Baby Seam.</li>
@@ -163,11 +167,11 @@
               <img
                 v-if="relatedProduct.image_url"
                 :src="relatedProduct.image_url"
-                :alt="relatedProduct.title"
+                :alt="relatedProduct.name"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <h3 class="text-sm font-medium text-black mb-1">{{ relatedProduct.title }}</h3>
+            <h3 class="text-sm font-medium text-black mb-1">{{ relatedProduct.name }}</h3>
             <p class="text-sm text-cream-700">MYR {{ Number(relatedProduct.price || 0).toFixed(2) }}</p>
           </NuxtLink>
         </div>
@@ -185,158 +189,25 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useCartStore } from '@/stores/cart'
+import { useApi, type Product } from '~/composables/useApi'
 
 const route = useRoute()
 const router = useRouter()
 const cartStore = useCartStore()
+const api = useApi()
 
 const loading = ref(true)
-const product = ref(null)
+const product = ref<Product | null>(null)
 const quantity = ref(1)
 const descriptionOpen = ref(true)
-const relatedProducts = ref([])
-const selectedVariant = ref(null)
-const selectedCollection = ref('Nara')
-
-// Collections
-const collections = ['Nara', 'Inaya', 'Nluxe', 'Muna', 'Ilya', 'Wayfarer']
-
-// Variants for the product
-const variants = ref([
-  { id: 1, name: 'Coolmint', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-c.jpg?v=1765855143&width=1000'] },
-  { id: 2, name: 'Snow', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-a.jpg?v=1765855990&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-a.jpg?v=1765855990&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-b.jpg?v=1765855990&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-c.jpg?v=1765855990&width=1000'] },
-  { id: 3, name: 'Rosy', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-a.jpg?v=1765855405&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-a.jpg?v=1765855405&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-b.jpg?v=1765855405&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-c.jpg?v=1765855405&width=1000'] },
-  { id: 4, name: 'Onyx', thumbnail: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-a.jpg?v=1765854942&width=200', images: ['https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-a.jpg?v=1765854942&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-b.jpg?v=1765854942&width=1000', 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-c.jpg?v=1765854942&width=1000'] },
-])
-
-// Thumbnails for the gallery - changes based on selected variant
-const thumbnails = computed(() => {
-  if (selectedVariant.value?.images) {
-    return selectedVariant.value.images
-  }
-  // Default Coolmint images
-  return [
-    'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-a.jpg?v=1765855143&width=1000',
-    'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000',
-    'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-c.jpg?v=1765855143&width=1000',
-  ]
-})
-
-// Product name without variant
-const productName = computed(() => {
-  if (!product.value) return ''
-  return product.value.title.split(' ')[0] || product.value.title
-})
-
-// Mock products for testing
-const mockProducts = [
-  {
-    id: 1,
-    title: 'Nara Coolmint',
-    description: 'Premium quality fabric with elegant design',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Coolmint-SQ-b.jpg?v=1765855142&width=1000',
-    category: 'Scarves',
-    brand: 'Tabby',
-    part_no: 'MINT-001',
-    stock_status: 'in_stock'
-  },
-  {
-    id: 2,
-    title: 'Nara Smokey',
-    description: 'Elegant signature collection piece',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Smokey-SQ-b.jpg?v=1765854993&width=1000',
-    category: 'Scarves',
-    brand: 'Tabby',
-    part_no: 'SMOKE-001',
-    stock_status: 'in_stock'
-  },
-  {
-    id: 3,
-    title: 'Nara Snow',
-    description: 'Luxurious silk fabric for everyday elegance',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Snow-SQ-a.jpg?v=1765855990&width=1000',
-    category: 'Premium',
-    brand: 'Tabby',
-    part_no: 'SNOW-001',
-    stock_status: 'in_stock'
-  },
-  {
-    id: 4,
-    title: 'Nara Rosy',
-    description: 'Comfortable and stylish for daily wear',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Rosy-SQ-a.jpg?v=1765855405&width=1000',
-    category: 'Basics',
-    brand: 'Tabby',
-    part_no: 'ROSY-001',
-    stock_status: 'in_stock'
-  },
-  {
-    id: 6,
-    title: 'Nara Ube',
-    description: 'Light and airy for warm weather',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Ube-SQ-a.jpg?v=1765855299&width=1000',
-    category: 'Seasonal',
-    brand: 'Tabby',
-    part_no: 'UBE-001',
-    stock_status: 'in_stock'
-  },
-  {
-    id: 7,
-    title: 'Nara Cosmos',
-    description: 'Beautiful cosmic inspired design',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Cosmos-SQ-a.jpg?v=1765854958&width=996',
-    category: 'Premium',
-    brand: 'Tabby',
-    part_no: 'COSM-001',
-    stock_status: 'in_stock'
-  },
-  {
-    id: 8,
-    title: 'Nara Onyx',
-    description: 'Elegant dark sophistication',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Onyx-SQ-a.jpg?v=1765854942&width=1000',
-    category: 'Premium',
-    brand: 'Tabby',
-    part_no: 'ONYX-001',
-    stock_status: 'in_stock'
-  },
-  {
-    id: 9,
-    title: 'Nara Granola',
-    description: 'Warm earthy tones for everyday style',
-    price: 69.00,
-    image_url: 'https://tudungpeople.com/cdn/shop/files/TudungPeople-Nara-Granola-SQ-b.jpg?v=1765855045&width=998',
-    category: 'Basics',
-    brand: 'Tabby',
-    part_no: 'GRAN-001',
-    stock_status: 'in_stock'
-  }
-]
-
-const selectVariant = (variant) => {
-  selectedVariant.value = variant
-}
-
-const selectCollection = (collection) => {
-  selectedCollection.value = collection
-}
-
-const openLightbox = (index) => {
-  // Lightbox functionality can be added later
-  console.log('Open lightbox at index:', index)
-}
+const relatedProducts = ref<Product[]>([])
 
 const incrementQuantity = () => {
-  quantity.value++
+  if (product.value && quantity.value < product.value.stock) {
+    quantity.value++
+  }
 }
 
 const decrementQuantity = () => {
@@ -350,10 +221,10 @@ const addToCart = () => {
 
   for (let i = 0; i < quantity.value; i++) {
     cartStore.addToCart({
-      id: product.value.id,
-      title: product.value.title,
+      id: product.value.id.toString(),
+      title: product.value.name,
       price: product.value.price,
-      image_url: product.value.image_url
+      image_url: product.value.image_url || undefined
     })
   }
 
@@ -367,10 +238,10 @@ const buyNow = () => {
 
   for (let i = 0; i < quantity.value; i++) {
     cartStore.addToCart({
-      id: product.value.id,
-      title: product.value.title,
+      id: product.value.id.toString(),
+      title: product.value.name,
       price: product.value.price,
-      image_url: product.value.image_url
+      image_url: product.value.image_url || undefined
     })
   }
 
@@ -378,22 +249,27 @@ const buyNow = () => {
 }
 
 onMounted(async () => {
-  const productId = parseInt(route.params.id)
+  // Load cart from localStorage
+  cartStore.loadFromLocalStorage()
 
-  // Use local mock products with local images
-  product.value = mockProducts.find(p => p.id === productId) || null
+  const productId = route.params.id
 
-  if (product.value) {
-    // Get related products from mock data
-    relatedProducts.value = mockProducts
-      .filter(p => p.id !== productId)
-      .slice(0, 4)
-  }
+  try {
+    // Fetch product from API
+    product.value = await api.get<Product>(`/api/products/${productId}`)
 
-  loading.value = false
-  // Select first variant by default
-  if (variants.value.length > 0) {
-    selectedVariant.value = variants.value[0]
+    if (product.value) {
+      // Fetch related products (other products, exclude current)
+      const allProducts = await api.get<Product[]>('/api/products/')
+      relatedProducts.value = allProducts
+        .filter(p => p.id !== product.value!.id && p.is_active)
+        .slice(0, 4)
+    }
+  } catch (error) {
+    console.error('Failed to fetch product:', error)
+    product.value = null
+  } finally {
+    loading.value = false
   }
 })
 </script>
