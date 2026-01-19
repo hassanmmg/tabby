@@ -92,7 +92,10 @@ export const useCartStore = defineStore('cart', {
         const saved = localStorage.getItem('cart')
         if (saved) {
           try {
-            this.items = JSON.parse(saved)
+            const parsed = JSON.parse(saved)
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              this.items = parsed
+            }
           } catch (e) {
             console.error('Failed to load cart from localStorage:', e)
           }
